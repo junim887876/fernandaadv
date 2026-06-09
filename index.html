@@ -3,251 +3,463 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Sistema Jurídico - Fernanda Mendes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <title>Fernanda Mendes | Gestão Jurídica Premium</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         /* =========================================================
-           RESET E CONTROLE DE TELAS BASE
+           SISTEMA DE DESIGN: VARIÁVEIS BASE (LIGHT E DARK)
            ========================================================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { width: 100vw; height: 100vh; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        :root {
+            /* Tema Light (Padrão) */
+            --bg-body: #F4F7FE;
+            --bg-card: #FFFFFF;
+            --bg-input: #FFFFFF;
+            --primary: #4318FF;
+            --primary-hover: #3311DB;
+            --text-dark: #2B3674;
+            --text-gray: #A3AED0;
+            --border-color: #E9EDF7;
+            --row-hover: #F8FAFC;
+            --shadow-soft: 0px 18px 40px rgba(112, 144, 176, 0.12);
+            --shadow-hover: 0px 20px 50px rgba(67, 24, 255, 0.15);
+            
+            /* Status Cores Padrão */
+            --success: #05CD99;
+            --warning: #FFCE20;
+            --danger: #EE5D50;
+            
+            /* Tipografia e Estrutura */
+            --font-title: 'Poppins', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+        }
+
+        /* TEMA DARK MODE */
+        [data-theme="dark"] {
+            --bg-body: #0F172A; /* Slate 900 */
+            --bg-card: #1E293B; /* Slate 800 */
+            --bg-input: #0F172A;
+            --primary: #6366F1; /* Indigo 500 (mais visível no escuro) */
+            --primary-hover: #818CF8;
+            --text-dark: #F8FAFC; /* Quase branco */
+            --text-gray: #94A3B8; /* Slate 400 */
+            --border-color: #334155; /* Slate 700 */
+            --row-hover: #334155;
+            --shadow-soft: 0px 10px 30px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0px 15px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Transições suaves para a troca de tema */
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s ease, border-color 0.3s ease; }
         
-        .view-container { display: none; width: 100%; height: 100%; overflow-y: auto; }
-        .view-container.active { display: flex; flex-direction: column; }
+        body { 
+            width: 100vw; height: 100vh; overflow: hidden; 
+            background-color: var(--bg-body); color: var(--text-dark);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--text-gray); border-radius: 10px; opacity: 0.5; }
+
+        .view-container { 
+            display: none !important; width: 100%; height: 100%; overflow-y: auto; 
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .view-container.active { display: flex !important; flex-direction: column; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         /* =========================================================
-           TEMA 1: LOGIN (FERNANDA MENDES)
+           TELA DE LOGIN
            ========================================================= */
-        #login-view {
-            background-image: url('https://w0.peakpx.com/wallpaper/701/817/HD-wallpaper-lawyer-office-justice-office-office-lawyer-interior-justice-statue.jpg'); 
-            background-size: cover; background-position: center; position: relative;
-            align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif;
+        #login-view { background: var(--bg-body); }
+        #login-view.active { flex-direction: row; align-items: stretch; }
+        
+        .login-image-side {
+            flex: 1; display: none; background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop') center/cover;
+            position: relative;
         }
-        #login-view::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(5, 10, 18, 0.92), rgba(5, 10, 18, 0.96)); z-index: 1;
+        @media (min-width: 900px) { .login-image-side { display: flex; flex-direction: column; justify-content: flex-end; padding: 60px; } }
+        
+        .login-image-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(67,24,255,0.4) 0%, rgba(11,20,55,0.95) 100%); }
+        .login-marketing-text { position: relative; z-index: 2; color: #FFF; max-width: 500px; }
+        .login-marketing-text h2 { font-family: var(--font-title); font-size: 2.5rem; line-height: 1.2; margin-bottom: 15px; }
+        .login-marketing-text p { font-size: 1.1rem; opacity: 0.9; }
+
+        .login-form-side {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 40px 20px; background: var(--bg-card);
         }
-        .login-content { z-index: 2; width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
         
-        .fm-header { text-align: center; margin-bottom: 30px; }
-        .fm-logo { font-family: 'Playfair Display', serif; color: #cd9f5b; font-size: 5.5rem; position: relative; margin-bottom: 5px; }
-        .fm-logo i { font-size: 1.4rem; position: absolute; top: 15px; right: -25px; }
-        .fm-title { font-family: 'Playfair Display', serif; color: #d1b58d; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 5px; }
-        .fm-subtitle { color: #d1b58d; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+        .login-box { width: 100%; max-width: 420px; }
+        .brand-logo-login { color: var(--primary); font-family: var(--font-title); font-size: 2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
         
-        .login-card {
-            background: rgba(18, 29, 46, 0.85); border: 1px solid rgba(209, 181, 141, 0.1);
-            border-radius: 15px; padding: 40px; width: 100%; max-width: 450px; text-align: center;
-            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .login-box h3 { font-family: var(--font-title); font-size: 2.2rem; color: var(--text-dark); margin-bottom: 10px; }
+        .login-box p { color: var(--text-gray); margin-bottom: 35px; font-size: 1rem; }
+        
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; }
+        .input-group input {
+            width: 100%; height: 50px; background: var(--bg-input); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 0 20px; font-size: 1rem; color: var(--text-dark);
+            font-family: var(--font-body); transition: 0.3s;
         }
-        .login-card h2 { font-family: 'Playfair Display', serif; color: #d1b58d; font-size: 2rem; margin-bottom: 10px; }
-        .login-card p { color: rgba(209, 181, 141, 0.9); font-size: 0.9rem; margin-bottom: 30px; }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); outline: none; }
         
-        .fm-input { position: relative; margin-bottom: 20px; border: 1px solid rgba(209, 181, 141, 0.6); border-radius: 8px; display: flex; align-items: center; padding: 0 15px; height: 55px; }
-        .fm-input:focus-within { border-color: #cd9f5b; box-shadow: 0 0 8px rgba(205, 159, 91, 0.3); }
-        .fm-input i { color: #d1b58d; font-size: 1.2rem; margin-right: 15px; }
-        .fm-input input { flex-grow: 1; background: transparent; border: none; outline: none; color: #d1b58d; font-size: 16px; } 
-        
-        .btn-fm {
-            width: 100%; height: 55px; background: linear-gradient(to right, #cd9f5b, #e0c885);
-            border: none; border-radius: 8px; color: #050a12; font-family: 'Montserrat', sans-serif;
-            font-size: 1.1rem; font-weight: 600; text-transform: uppercase; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; margin-top: 20px; transition: 0.3s;
+        .btn-corporate {
+            width: 100%; height: 50px; background: var(--primary); color: #FFF; border: none;
+            border-radius: var(--radius-md); font-family: var(--font-title); font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-fm:hover { background: linear-gradient(to right, #d1b58d, #f1e2b8); }
-        .btn-fm i { margin-right: 15px; font-size: 1.2rem; }
-        
-        .fm-footer { margin-top: 40px; text-align: center; color: #d1b58d; font-size: 0.8rem; }
+        .btn-corporate:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 
         /* =========================================================
-           TEMA 2: DASHBOARDS PREMIUM APPLE 
+           TOPBAR E NAVEGAÇÃO
            ========================================================= */
-        .dashboard-container { background: #000; color: #FFF; padding: 30px 20px; align-items: center; }
+        .topbar {
+            background: var(--bg-card); height: 80px; padding: 0 5%; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10;
+        }
+        .topbar-logo { font-family: var(--font-title); font-size: 1.4rem; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+        .topbar-logo span { color: var(--primary); }
         
-        .apple-header { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 0.5px solid rgba(255,255,255,0.15); padding-bottom: 18px;}
-        .apple-header h2 { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; }
-        .apple-header p { color: #EBEBF599; font-size: 13px; }
+        .user-controls { display: flex; align-items: center; gap: 15px; }
         
-        /* Layout Grid */
-        .dashboard-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1.4fr; 
-            gap: 25px; 
-            width: 100%; 
-            max-width: 1200px; 
+        /* Botão Tema */
+        .btn-theme {
+            background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-dark);
+            width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.2s; font-size: 1.1rem;
+        }
+        .btn-theme:hover { background: var(--border-color); }
+
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 42px; height: 42px; background: var(--primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #FFF; font-weight: bold; font-size: 1.1rem; }
+        .user-info { display: flex; flex-direction: column; text-align: right; }
+        .user-info span { font-weight: 700; font-family: var(--font-title); font-size: 0.95rem; color: var(--text-dark);}
+        .user-info small { color: var(--text-gray); font-size: 0.8rem; }
+        
+        .btn-logout { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-logout:hover { background: rgba(238, 93, 80, 0.1); }
+
+        /* =========================================================
+           DASHBOARDS E CONTEÚDO
+           ========================================================= */
+        .dashboard-content { padding: 40px 5%; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #1A0B6E 100%);
+            border-radius: var(--radius-lg); padding: 35px 40px; color: #FFF;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+            box-shadow: var(--shadow-soft); position: relative; overflow: hidden;
+        }
+        [data-theme="dark"] .welcome-banner { background: linear-gradient(135deg, var(--primary) 0%, #312E81 100%); }
+        .welcome-banner::after { content: ''; position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        .welcome-text h2 { font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 5px; color:#FFF;}
+        .welcome-text p { color: rgba(255,255,255,0.8); font-size: 1rem; }
+
+        .grid-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+        .grid-investidor { grid-template-columns: 1fr 1.2fr; }
+
+        .saas-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); }
+        .saas-card-header { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .saas-card-header h3 { font-family: var(--font-title); font-size: 1.3rem; color: var(--text-dark); }
+        .saas-card-header p { font-size: 0.9rem; color: var(--text-gray); margin-top: 5px; }
+
+        /* Formulário no Card */
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .form-label { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block; }
+        .form-control {
+            width: 100%; background: var(--bg-body); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 12px 16px; font-size: 0.95rem; 
+            color: var(--text-dark); font-family: var(--font-body); transition: 0.3s;
+        }
+        .form-control:focus { background: var(--bg-input); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); outline: none; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        select.form-control { cursor: pointer; }
+
+        /* Lista de Clientes */
+        .list-container { max-height: 600px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px; }
+        
+        .client-row {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);
+            padding: 20px; transition: 0.3s; display: flex; flex-direction: column; gap: 12px;
+        }
+        .client-row:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-soft); background: var(--row-hover); }
+        .client-row.status-recebido { opacity: 0.6; filter: grayscale(30%); }
+        .client-row.status-recebido:hover { opacity: 1; filter: grayscale(0%); border-color: var(--border-color); }
+        
+        .row-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+        .client-name { font-family: var(--font-title); font-size: 1.15rem; font-weight: 700; color: var(--text-dark); }
+        .client-meta { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px; font-size: 0.85rem; color: var(--text-gray); }
+        .client-meta i { color: var(--primary); margin-right: 4px; }
+        
+        .row-body { background: var(--bg-body); padding: 12px; border-radius: 8px; font-size: 0.9rem; color: var(--text-dark); }
+        
+        .row-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; padding-top: 15px; border-top: 1px dashed var(--border-color); flex-wrap: wrap; gap: 10px;}
+        .valor-causa { font-family: var(--font-title); font-size: 1.2rem; font-weight: 700; color: var(--text-dark); }
+        
+        /* Badges de Status Adaptativos */
+        .status-badge { padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .status-badge.pendente { background: rgba(255, 152, 0, 0.15); color: #F57C00; }
+        .status-badge.recebido { background: rgba(5, 205, 153, 0.15); color: #04A87D; }
+        [data-theme="dark"] .status-badge.pendente { color: #FFB74D; }
+        [data-theme="dark"] .status-badge.recebido { color: #6EE7B7; }
+
+        .action-select {
+            background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-dark);
+            padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; outline: none; transition: 0.2s;
+        }
+        .action-select:focus { border-color: var(--primary); }
+        .action-select option { background: var(--bg-card); color: var(--text-dark); }
+
+        /* Dashboard Investidor - Destaque Financeiro */
+        .financial-highlight {
+            background: rgba(5, 205, 153, 0.1); border: 1px solid rgba(5, 205, 153, 0.2);
+            border-radius: var(--radius-md); padding: 15px 20px; display: inline-flex; flex-direction: column; width: 100%;
+        }
+        .financial-highlight span { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--success); letter-spacing: 0.5px; }
+        .financial-highlight strong { font-family: var(--font-title); font-size: 1.5rem; color: var(--text-dark); margin-top: 2px; }
+
+        /* Notificações Toast */
+        #toast-container { position: fixed; bottom: 30px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        .toast {
+            background: var(--bg-card); border-radius: var(--radius-md); padding: 16px 20px; box-shadow: var(--shadow-soft);
+            display: flex; align-items: center; gap: 15px; font-family: var(--font-body); font-weight: 500; font-size: 0.95rem; color: var(--text-dark);
+            transform: translateX(120%); animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-left: 5px solid var(--primary); border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
+        }
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+        .toast i { font-size: 1.4rem; }
+        .toast.success i { color: var(--success); }
+        .toast.error i { color: var(--danger); }
+        
+        @keyframes slideInRight { to { transform: translateX(0); } }
+        @keyframes fadeOutRight { to { opacity: 0; transform: translateX(120%); } }
+
+        /* =========================================================
+           RESPONSIVIDADE E ADAPTAÇÃO TOTAL (Mobile, Tablet, Desktop)
+           ========================================================= */
+        @media (max-width: 1024px) { /* Tablets */
+            .grid-layout, .grid-investidor { grid-template-columns: 1fr; }
+            .form-wrapper { order: 2; }
+            .list-wrapper { order: 1; }
+            .topbar { padding: 0 20px; }
+            .dashboard-content { padding: 30px 20px; }
+        }
+        
+        @media (max-width: 768px) { /* Mobile Grande */
+            .login-image-side { display: none; }
+            .welcome-banner { flex-direction: column; text-align: left; padding: 25px 20px; align-items: flex-start;}
+            .welcome-banner::after { display: none; }
+            .user-info span { display: none; } /* Esconde o nome no topbar para poupar espaço */
+            .user-info small { display: none; }
+            .topbar-logo { font-size: 1.2rem; }
+            .btn-logout span { display: none; } /* Deixa só o ícone de sair */
+            .btn-logout { padding: 8px 10px; }
         }
 
-        .apple-card {
-            background: rgba(28, 28, 30, 0.55); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 0.5px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 24px; width: 100%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-        }
-        .apple-card h2 { font-size: 19px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.3px; }
-        .subtitle-card { color: #EBEBF599; font-size: 12px; margin-bottom: 20px; line-height: 1.4; }
-        
-        /* Inputs Apple */
-        .apple-input-group { margin-bottom: 16px; width: 100%; }
-        .apple-input-group label { display: block; font-size: 11px; font-weight: 600; color: #EBEBF599; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; padding-left: 2px;}
-        .apple-input-group input, .apple-input-group select, .apple-input-group textarea {
-            width: 100%; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1);
-            border-radius: 12px; padding: 14px; font-size: 16px; color: #FFF; outline: none; transition: 0.2s;
-        }
-        .apple-input-group input:focus, .apple-input-group select:focus, .apple-input-group textarea:focus { border-color: #0A84FF; background: rgba(255,255,255,0.1); }
-        .apple-input-group select option { background: #1C1C1E; color: #FFF; }
-        
-        /* Botões */
-        .btn-apple { width: 100%; background: #0A84FF; color: #FFF; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
-        .btn-apple:active { transform: scale(0.98); }
-        .btn-apple:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-apple.danger { background: rgba(255, 69, 58, 0.15); color: #FF453A; width: auto; padding: 10px 20px; font-size: 14px; margin-top:0;}
-        .btn-apple.danger:hover { background: rgba(255, 69, 58, 0.25); }
-        
-        /* Listagem Premium */
-        .client-list { max-height: 600px; overflow-y: auto; padding-right: 6px;}
-        .client-list::-webkit-scrollbar { width: 5px; }
-        .client-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-        
-        .apple-client-card { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s;}
-        .apple-client-card:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
-        .apple-client-card.recebido-card { opacity: 0.65; } /* Deixa os recebidos mais sutis */
-        
-        .apple-client-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .apple-client-card p { font-size: 14px; color: #EBEBF599; margin-bottom: 6px; line-height: 1.4; }
-        .apple-client-card strong { color: #FFF; font-weight: 500; }
-        
-        /* Badges */
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .badge.pendente { background: rgba(255, 159, 10, 0.15); color: #FF9F0A; border: 0.5px solid rgba(255, 159, 10, 0.3); }
-        .badge.recebido { background: rgba(50, 215, 75, 0.15); color: #32D74B; border: 0.5px solid rgba(50, 215, 75, 0.3); }
-        
-        /* Box de Lucro Investidor */
-        .lucro-box { background: rgba(50, 215, 75, 0.08); border: 0.5px solid rgba(50, 215, 75, 0.25); border-radius: 12px; padding: 14px; margin-top: 14px; }
-        .lucro-box span { display: block; font-size: 11px; color: #32D74B; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 2px; }
-        .lucro-box strong { font-size: 21px; color: #FFF; font-weight: 700; }
-
-        /* Adaptação Responsiva Anti-Quebra e Inversão Mobile */
-        @media (max-width: 900px) {
-            .dashboard-grid { display: flex; flex-direction: column; gap: 20px; }
-            .form-card { order: 2; } /* Joga o form para baixo no celular */
-            .list-card { order: 1; } /* Puxa a lista para cima no celular */
-            .chart-card { order: 2; }
-            .view-container { padding: 15px 10px; }
-            .apple-header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .btn-apple.danger { width: 100%; text-align: center; }
-            .client-list { max-height: 450px; }
-        }
-        @media (max-width: 768px) {
-            .fm-logo { font-size: 4.2rem; }
-            .fm-title { font-size: 1.7rem; letter-spacing: 2px; }
-            .login-card { padding: 30px 20px; }
+        @media (max-width: 480px) { /* Mobile Pequeno */
+            .dashboard-content { padding: 20px 15px; }
+            .saas-card { padding: 20px 15px; }
+            .client-row { padding: 15px; }
+            .row-footer { flex-direction: column; align-items: stretch; gap: 15px; }
+            .action-select { width: 100%; text-align: center; }
+            .client-meta { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
 
+    <div id="toast-container"></div>
+
     <div id="login-view" class="view-container active">
-        <div class="login-content">
-            <div class="fm-header">
-                <div class="fm-logo">F<i class="fa-solid fa-scale-unbalanced"></i>M</div>
-                <h1 class="fm-title">Fernanda Mendes</h1>
-                <p class="fm-subtitle">Advocacia e Consultoria Jurídica</p>
+        <div class="login-image-side">
+            <div class="login-image-overlay"></div>
+            <div class="login-marketing-text">
+                <h2>Gestão Estratégica para o seu Escritório.</h2>
+                <p>Tenha o controle absoluto dos seus processos, acompanhamento de honorários e rentabilidade em uma interface inteligente e veloz.</p>
             </div>
-
-            <div class="login-card">
-                <h2>Área do Sistema</h2>
-                <p>Acesse sua conta para continuar</p>
+        </div>
+        
+        <div class="login-form-side">
+            <div class="login-box">
+                <div class="brand-logo-login"><i class="fa-solid fa-scale-balanced"></i> F.Mendes</div>
+                <h3>Bem-vindo(a)</h3>
+                <p>Insira suas credenciais para acessar o painel corporativo.</p>
                 
-                <div class="fm-input">
-                    <i class="fa-regular fa-user"></i>
-                    <input type="text" id="login-email" placeholder="Usuário" autocomplete="off">
+                <div class="input-group">
+                    <label>Usuário de Acesso</label>
+                    <input type="text" id="login-email" placeholder="Ex: fernanda" autocomplete="off">
                 </div>
-                <div class="fm-input">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="login-pass" placeholder="Senha">
+                <div class="input-group">
+                    <label>Senha de Segurança</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
                 </div>
                 
-                <button class="btn-fm" onclick="fazerLogin()">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Entrar
+                <button class="btn-corporate" onclick="fazerLogin()" style="margin-top: 10px;">
+                    Acessar Plataforma <i class="fa-solid fa-arrow-right"></i>
                 </button>
-            </div>
-            
-            <div class="fm-footer">
-                <p>&copy; 2024 FERNANDA MENDES LTDA | PROTEGIDO</p>
             </div>
         </div>
     </div>
 
-    <div id="advogado-view" class="view-container dashboard-container">
-        <div class="apple-header">
-            <div>
-                <h2>Painel da Advogada</h2>
-                <p>Administração de Casos e Processos</p>
-            </div>
-            <button class="btn-apple danger" onclick="logout()">Sair</button>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="apple-card form-card">
-                <h2>Novo Caso</h2>
-                <p class="subtitle-card">Os dados serão sincronizados na nuvem e salvos de forma automatizada com status inicial Pendente.</p>
-                
-                <div class="apple-input-group"><label>Nome do Cliente</label><input type="text" id="adv-nome" placeholder="Nome completo"></div>
-                <div class="apple-input-group"><label>WhatsApp</label><input type="tel" id="adv-wpp" placeholder="(00) 00000-0000"></div>
-                <div class="apple-input-group"><label>Data de Julgamento</label><input type="date" id="adv-data"></div>
-                <div class="apple-input-group"><label>Descrição do Caso</label><textarea id="adv-desc" rows="3" placeholder="Insira os detalhes e observações do caso..."></textarea></div>
-                <div class="apple-input-group">
-                    <label>Investidor Associado</label>
-                    <select id="adv-investidor">
-                        <option value="junior">Júnior (Regra 6%)</option>
-                        <option value="fernanda">Fernanda</option>
-                    </select>
+    <div id="advogado-view" class="view-container">
+        <header class="topbar">
+            <div class="topbar-logo"><i class="fa-solid fa-scale-balanced"></i> F.Mendes</div>
+            <div class="user-controls">
+                <button class="btn-theme" onclick="toggleTheme()" title="Alternar Tema Escuro/Claro"><i class="fa-solid fa-moon"></i></button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span>Dra. Fernanda Mendes</span>
+                        <small>Gestão Central</small>
+                    </div>
+                    <div class="avatar">F</div>
+                    <button class="btn-logout" onclick="logout()" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Sair</span></button>
                 </div>
-                <div class="apple-input-group"><label>Valor Total da Causa (R$)</label><input type="number" id="adv-valor" step="0.01" placeholder="R$ 0,00"></div>
-                
-                <button class="btn-apple" id="btn-enviar-form" onclick="enviarParaGoogleFormsOculto()">
-                    <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Salvar e Enviar Caso
-                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Visão Geral do Escritório</h2>
+                    <p>Gerencie processos, delegue associados e atualize os status na nuvem.</p>
+                </div>
             </div>
 
-            <div class="apple-card list-card">
-                <h2>Casos Cadastrados</h2>
-                <p class="subtitle-card">Os casos mais próximos de hoje são exibidos no topo. Casos concluídos (Recebidos) vão para o final da lista automaticamente.</p>
-                <div class="client-list" id="lista-advogada"></div>
+            <div class="grid-layout">
+                <div class="saas-card form-wrapper">
+                    <div class="saas-card-header">
+                        <h3>Cadastrar Processo</h3>
+                        <p>Os dados serão inseridos diretamente no banco de dados.</p>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div><label class="form-label">Nome do Cliente</label><input type="text" class="form-control" id="adv-nome" placeholder="Nome completo"></div>
+                        <div><label class="form-label">WhatsApp Contato</label><input type="tel" class="form-control" id="adv-wpp" placeholder="(00) 00000-0000"></div>
+                        <div><label class="form-label">Data Limite / Julgamento</label><input type="date" class="form-control" id="adv-data"></div>
+                        <div><label class="form-label">Síntese do Processo</label><textarea class="form-control" id="adv-desc" placeholder="Detalhes da ação..."></textarea></div>
+                        <div>
+                            <label class="form-label">Parceiro / Investidor</label>
+                            <select class="form-control" id="adv-investidor">
+                                <option value="junior">Júnior (Rentabilidade 6% Fixa)</option>
+                                <option value="fernanda">Fernanda (Integral)</option>
+                            </select>
+                        </div>
+                        <div><label class="form-label">Valor Total da Causa (R$)</label><input type="number" class="form-control" id="adv-valor" step="0.01" placeholder="0.00"></div>
+                        
+                        <button class="btn-corporate" id="btn-enviar-form" onclick="enviarParaGoogleFormsOculto()" style="margin-top: 10px;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Registrar na Nuvem
+                        </button>
+                    </div>
+                </div>
+
+                <div class="saas-card list-wrapper">
+                    <div class="saas-card-header">
+                        <h3>Processos em Andamento</h3>
+                        <p>Ordenados por proximidade do prazo.</p>
+                    </div>
+                    <div class="list-container" id="lista-advogada">
+                        </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="investidor-view" class="view-container dashboard-container">
-        <div class="apple-header">
-            <div>
-                <h2 id="inv-titulo">Painel do Investidor</h2>
-                <p>Acompanhamento de Lucros Líquidos Reais</p>
+    <div id="investidor-view" class="view-container">
+        <header class="topbar">
+            <div class="topbar-logo"><i class="fa-solid fa-chart-line"></i> Portal do <span>Investidor</span></div>
+            <div class="user-controls">
+                <button class="btn-theme" onclick="toggleTheme()" title="Alternar Tema Escuro/Claro"><i class="fa-solid fa-moon"></i></button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span id="inv-titulo">Bem-vindo</span>
+                        <small>Acompanhamento</small>
+                    </div>
+                    <div class="avatar" style="background:var(--success);">J</div>
+                    <button class="btn-logout" onclick="logout()" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Sair</span></button>
+                </div>
             </div>
-            <button class="btn-apple danger" onclick="logout()">Sair</button>
-        </div>
+        </header>
 
-        <div class="dashboard-grid">
-            <div class="apple-card list-card">
-                <h2>Meus Casos Associados</h2>
-                <p class="subtitle-card">Visualização de lucros prioritários (Datas mais próximas acima, recebidos abaixo).</p>
-                <div class="client-list" id="lista-investidor"></div>
+        <div class="dashboard-content">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #05CD99 0%, #038A66 100%);">
+                <div class="welcome-text">
+                    <h2>Análise de Rentabilidade Fixa (6%)</h2>
+                    <p>Acompanhe os lucros líquidos das suas causas de forma transparente e precisa.</p>
+                </div>
             </div>
 
-            <div class="apple-card chart-card">
-                <h2>Recebimentos Estimados por Mês</h2>
-                <p class="subtitle-card">Gráfico analítico calculado com base no lucro líquido real das guias.</p>
-                <div style="width: 100%; height: 320px; margin-top: 10px;">
-                    <canvas id="chartLucros"></canvas>
+            <div class="grid-layout grid-investidor">
+                <div class="saas-card">
+                    <div class="saas-card-header">
+                        <h3>Contratos Associados</h3>
+                        <p>Histórico de operações ativas.</p>
+                    </div>
+                    <div class="list-container" id="lista-investidor">
+                        </div>
+                </div>
+
+                <div class="saas-card">
+                    <div class="saas-card-header">
+                        <h3>Projeção de Receita (Mensal)</h3>
+                        <p>Visão gráfica baseada na rentabilidade de 6% sobre os processos.</p>
+                    </div>
+                    <div style="width: 100%; height: 380px; margin-top: 20px; position: relative;">
+                        <canvas id="chartLucros"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Configurações Globais
+        // --- 1. LÓGICA DO DARK MODE / TEMA ---
+        function initTheme() {
+            const savedTheme = localStorage.getItem('fm_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('fm_theme', newTheme);
+            updateThemeIcon();
+
+            // Atualiza as cores do gráfico se ele estiver aberto
+            if(meuGrafico) {
+                const isDark = newTheme === 'dark';
+                meuGrafico.options.scales.y.ticks.color = isDark ? '#94A3B8' : '#A3AED0';
+                meuGrafico.options.scales.x.ticks.color = isDark ? '#94A3B8' : '#A3AED0';
+                meuGrafico.update();
+            }
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.querySelectorAll('.btn-theme').forEach(btn => {
+                btn.innerHTML = isDark ? '<i class="fa-solid fa-sun" style="color:#FFB74D;"></i>' : '<i class="fa-solid fa-moon"></i>';
+            });
+        }
+        
+        // Inicializa o tema ao carregar
+        initTheme();
+
+
+        // --- 2. CONFIGURAÇÕES DE BANCO DE DADOS ---
         const SHEET_ID = '1WMUKbr-gNUDIql29huUskmSinfQfAC_5ZPU4lVnHWPU';
         const URL_ADVOGADA = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=advogada`;
         const FORM_POST_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdiOe4Vbi8Lc852CU8sdjLZhtYk2T5yhynMXCBUfguziKZPRQ/formResponse";
@@ -257,7 +469,28 @@
         let usuarioLogado = null;
         let meuGrafico = null;
 
-        // Trata os dados do CSV ignorando aspas
+        // --- 3. UTILITÁRIOS E PARSERS ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>';
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOutRight 0.4s forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        function mudarTela(idTela) {
+            document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
+            document.getElementById(idTela).classList.add('active');
+        }
+
         function parseCSVLine(text) {
             let p = '', row = [''], i = 0, r = 0, s = !0, l;
             for (l of text) {
@@ -269,12 +502,11 @@
             return row;
         }
 
-        // Converte a data string (YYYY-MM-DD ou DD/MM/YYYY) para Objeto Date nativo
         function parseDataReal(dataStr) {
             if (!dataStr) return new Date();
             if (dataStr.includes('-')) {
                 const p = dataStr.split('-');
-                return new Date(p[0], p[1] - 1, p[2]); // Evita bug de fuso horário UTC
+                return new Date(p[0], p[1] - 1, p[2]); 
             }
             if (dataStr.includes('/')) {
                 const p = dataStr.split('/');
@@ -283,7 +515,6 @@
             return new Date(dataStr);
         }
 
-        // Formata data para o padrão Brasileiro (DD/MM/AAAA)
         function formatarDataBR(dataStr) {
             const d = parseDataReal(dataStr);
             const dia = String(d.getDate()).padStart(2, '0');
@@ -292,9 +523,12 @@
             return `${dia}/${mes}/${ano}`;
         }
 
-        // Cria a etiqueta de "Em X dias" ou "Atrasado"
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
         function gerarBadgeTempo(dataStr, status) {
-            if (status.toLowerCase().trim() === 'recebido') return ''; // Se já recebeu, esconde o badge de tempo
+            if (status.toLowerCase().trim() === 'recebido') return ''; 
             
             const hoje = new Date();
             hoje.setHours(0,0,0,0);
@@ -305,14 +539,13 @@
             const diffTime = dataCaso - hoje;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            if(diffDays === 0) return `<span style="color:#FF9F0A; font-size:12px; margin-left:6px; font-weight:700;">(Hoje)</span>`;
-            if(diffDays === 1) return `<span style="color:#32D74B; font-size:12px; margin-left:6px; font-weight:700;">(Amanhã)</span>`;
-            if(diffDays > 1) return `<span style="color:#0A84FF; font-size:11px; margin-left:6px; font-weight:600;">(Em ${diffDays} dias)</span>`;
-            if(diffDays < 0) return `<span style="color:#FF453A; font-size:11px; margin-left:6px; font-weight:700;">(Atrasado ${Math.abs(diffDays)}d)</span>`;
+            if(diffDays === 0) return `<strong style="color:var(--warning); margin-left:6px; font-size: 0.8rem;">(Hoje)</strong>`;
+            if(diffDays === 1) return `<strong style="color:var(--success); margin-left:6px; font-size: 0.8rem;">(Amanhã)</strong>`;
+            if(diffDays > 1) return `<span style="color:var(--text-gray); margin-left:6px; font-size: 0.8rem;">(Em ${diffDays} dias)</span>`;
+            if(diffDays < 0) return `<strong style="color:var(--danger); margin-left:6px; font-size: 0.8rem;">(Atrasado ${Math.abs(diffDays)}d)</strong>`;
             return '';
         }
 
-        // Ordenador Lógico: Pendentes primeiro. Dentre os pendentes, as datas mais próximas de hoje ficam no topo. Antigos ficam por último.
         function ordenarCasosPrioridade(casos) {
             const hoje = new Date();
             hoje.setHours(0,0,0,0);
@@ -320,14 +553,10 @@
             return [...casos].sort((a, b) => {
                 const statusA = a.status.toLowerCase().trim() === 'pendente' ? 0 : 1;
                 const statusB = b.status.toLowerCase().trim() === 'pendente' ? 0 : 1;
-                
-                // Prioridade 1: Status (Pendente sempre acima de Recebido)
                 if (statusA !== statusB) return statusA - statusB;
 
-                // Prioridade 2: Data (As datas mais próximas do dia atual ganham prioridade máxima)
                 const dA = parseDataReal(a.data);
                 const dB = parseDataReal(b.data);
-                
                 const diffA = Math.abs(dA - hoje);
                 const diffB = Math.abs(dB - hoje);
 
@@ -335,74 +564,7 @@
             });
         }
 
-        // ================= ADICIONAR NOVO CLIENTE =================
-        async function enviarParaGoogleFormsOculto() {
-            const nome = document.getElementById('adv-nome').value.trim();
-            const wpp = document.getElementById('adv-wpp').value.trim();
-            const data = document.getElementById('adv-data').value.trim();
-            const desc = document.getElementById('adv-desc').value.trim();
-            const inv = document.getElementById('adv-investidor').value.trim();
-            const valor = document.getElementById('adv-valor').value.trim();
-
-            if(!nome || !data || !valor) {
-                alert("Preencha ao menos Nome, Data de Julgamento e Valor da Causa.");
-                return;
-            }
-
-            const btn = document.getElementById('btn-enviar-form');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Salvando na Nuvem...';
-            btn.disabled = true;
-
-            const formData = new URLSearchParams();
-            formData.append("entry.1644216679", nome);
-            formData.append("entry.87990341", wpp);
-            formData.append("entry.266920253", data);
-            formData.append("entry.1034218931", desc);
-            formData.append("entry.146227971", inv);
-            formData.append("entry.1540368822", valor);
-
-            try {
-                await fetch(FORM_POST_URL, { method: 'POST', mode: 'no-cors', body: formData });
-
-                document.getElementById('adv-nome').value = '';
-                document.getElementById('adv-wpp').value = '';
-                document.getElementById('adv-data').value = '';
-                document.getElementById('adv-desc').value = '';
-                document.getElementById('adv-valor').value = '';
-
-                setTimeout(async () => {
-                    await sincronizarGoogleSheets();
-                    alert("✅ Cliente adicionado com sucesso!");
-                    btn.innerHTML = '<i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Salvar e Enviar Caso';
-                    btn.disabled = false;
-                }, 1500);
-            } catch (error) {
-                alert("Erro ao enviar dados.");
-                btn.disabled = false;
-            }
-        }
-
-        // ================= EDITAR STATUS =================
-        async function mudarStatusPlanilha(nomeCliente, novoStatus, selectElement) {
-            selectElement.disabled = true;
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ nome: nomeCliente, status: novoStatus })
-                });
-
-                setTimeout(async () => {
-                    await sincronizarGoogleSheets();
-                }, 1200);
-
-            } catch (error) {
-                alert("Erro ao atualizar o status na nuvem.");
-                selectElement.disabled = false;
-            }
-        }
-
-        // ================= SINCRONIZAÇÃO =================
+        // --- 4. COMUNICAÇÃO COM O SERVIDOR (NUVEM) ---
         async function sincronizarGoogleSheets() {
             try {
                 const resAdv = await fetch(URL_ADVOGADA);
@@ -433,32 +595,104 @@
                 if(usuarioLogado === 'fernanda') renderAdvogada();
                 else if(usuarioLogado === 'junior') renderInvestidor();
             } catch (error) {
-                console.error("Erro na sincronização técnica:", error);
+                showToast("Erro ao conectar ao banco de dados.", "error");
             }
         }
 
-        // ================= SESSÃO FIXA =================
-        function mudarTela(idTela) {
-            document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
-            document.getElementById(idTela).classList.add('active');
+        async function enviarParaGoogleFormsOculto() {
+            const nome = document.getElementById('adv-nome').value.trim();
+            const wpp = document.getElementById('adv-wpp').value.trim();
+            const data = document.getElementById('adv-data').value.trim();
+            const desc = document.getElementById('adv-desc').value.trim();
+            const inv = document.getElementById('adv-investidor').value.trim();
+            const valor = document.getElementById('adv-valor').value.trim();
+
+            if(!nome || !data || !valor) {
+                showToast("Preencha Nome, Data e Valor.", "error");
+                return;
+            }
+
+            const btn = document.getElementById('btn-enviar-form');
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            const formData = new URLSearchParams();
+            formData.append("entry.1644216679", nome);
+            formData.append("entry.87990341", wpp);
+            formData.append("entry.266920253", data);
+            formData.append("entry.1034218931", desc);
+            formData.append("entry.146227971", inv);
+            formData.append("entry.1540368822", valor);
+
+            try {
+                await fetch(FORM_POST_URL, { method: 'POST', mode: 'no-cors', body: formData });
+
+                ['adv-nome', 'adv-wpp', 'adv-data', 'adv-desc', 'adv-valor'].forEach(id => document.getElementById(id).value = '');
+
+                setTimeout(async () => {
+                    await sincronizarGoogleSheets();
+                    showToast("Processo cadastrado na nuvem!");
+                    btn.innerHTML = textoOriginal;
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }, 1500);
+            } catch (error) {
+                showToast("Falha na comunicação com o Google.", "error");
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
         }
 
+        async function mudarStatusPlanilha(nomeCliente, novoStatus, selectElement) {
+            selectElement.disabled = true;
+            const containerRow = selectElement.closest('.client-row');
+            containerRow.style.opacity = '0.5';
+            
+            try {
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST', mode: 'no-cors',
+                    body: JSON.stringify({ nome: nomeCliente, status: novoStatus })
+                });
+
+                showToast(`Status alterado para: ${novoStatus}`);
+                
+                setTimeout(async () => {
+                    await sincronizarGoogleSheets();
+                }, 1500);
+
+            } catch (error) {
+                showToast("Erro ao sincronizar status.", "error");
+                selectElement.disabled = false;
+                containerRow.style.opacity = '1';
+            }
+        }
+
+        // --- 5. LÓGICA DE SESSÃO E RENDERIZAÇÃO DAS TELAS ---
         async function fazerLogin() {
             const email = document.getElementById('login-email').value.trim().toLowerCase();
             const senha = document.getElementById('login-pass').value.trim();
+            const btn = document.querySelector('.login-form-side .btn-corporate');
 
-            if (email === 'fernanda' && senha === 'fernanda') {
-                usuarioLogado = 'fernanda';
-                mudarTela('advogado-view');
-                await sincronizarGoogleSheets();
-            } else if (email === 'junior' && senha === 'junior') {
-                usuarioLogado = 'junior';
-                document.getElementById('inv-titulo').innerText = `Olá, Júnior`;
-                mudarTela('investidor-view');
-                await sincronizarGoogleSheets();
-            } else {
-                alert("Usuário ou senha incorretos.");
-            }
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
+
+            setTimeout(async () => {
+                if (email === 'fernanda' && senha === 'fernanda') {
+                    usuarioLogado = 'fernanda';
+                    mudarTela('advogado-view');
+                    await sincronizarGoogleSheets();
+                } else if (email === 'junior' && senha === 'junior') {
+                    usuarioLogado = 'junior';
+                    document.getElementById('inv-titulo').innerText = `Olá, Júnior`;
+                    mudarTela('investidor-view');
+                    await sincronizarGoogleSheets();
+                } else {
+                    showToast("Credenciais incorretas.", "error");
+                }
+                btn.innerHTML = 'Acessar Plataforma <i class="fa-solid fa-arrow-right"></i>';
+            }, 600);
         }
 
         function logout() {
@@ -468,13 +702,16 @@
             mudarTela('login-view');
         }
 
-        // ================= RENDER ADVOGADA =================
         function renderAdvogada() {
             const div = document.getElementById('lista-advogada');
             div.innerHTML = '';
             
             if(dbClientes.length === 0) {
-                div.innerHTML = `<p style="color:#EBEBF599; text-align:center; padding-top:30px;">Nenhum caso localizado na nuvem.</p>`;
+                div.innerHTML = `
+                    <div style="text-align:center; padding:50px 20px; color:var(--text-gray);">
+                        <i class="fa-regular fa-folder-open" style="font-size:3rem; margin-bottom:15px; opacity:0.6;"></i>
+                        <p style="font-family:var(--font-title); font-size:1.1rem;">Nenhum processo localizado.</p>
+                    </div>`;
                 return;
             }
 
@@ -483,22 +720,35 @@
             ordenados.forEach(c => {
                 const isRecebido = c.status.toLowerCase() === 'recebido';
                 const badgeClass = isRecebido ? 'recebido' : 'pendente';
-                const cardClass = isRecebido ? 'recebido-card' : '';
+                const cardClass = isRecebido ? 'status-recebido' : '';
                 const timeBadge = gerarBadgeTempo(c.data, c.status);
 
                 div.innerHTML += `
-                    <div class="apple-client-card ${cardClass}">
-                        <h3>${c.nome} <span class="badge ${badgeClass}">${c.status}</span></h3>
-                        <p><strong>WhatsApp:</strong> ${c.wpp}</p>
-                        <p><strong>Julgamento:</strong> ${formatarDataBR(c.data)} ${timeBadge}</p>
-                        <p><strong>Investidor:</strong> ${c.inv.toUpperCase()}</p>
-                        <p style="color:#FFF; font-weight:600; margin: 6px 0;">Valor da Causa: R$ ${c.valor.toFixed(2)}</p>
-                        <p><strong>Descrição:</strong> ${c.desc}</p>
-                        <div class="apple-input-group" style="margin-top:14px; margin-bottom:0;">
-                            <label style="font-size:10px;">Status da Planilha</label>
-                            <select onchange="mudarStatusPlanilha('${c.nome}', this.value, this)" style="padding:10px; font-size:14px; background:rgba(255,255,255,0.12); cursor:pointer;">
-                                <option value="Pendente" ${c.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
-                                <option value="Recebido" ${c.status === 'Recebido' ? 'selected' : ''}>Recebido</option>
+                    <div class="client-row ${cardClass}">
+                        <div class="row-header">
+                            <div>
+                                <h4 class="client-name">${c.nome}</h4>
+                                <div class="client-meta">
+                                    <span><i class="fa-brands fa-whatsapp"></i> ${c.wpp}</span>
+                                    <span><i class="fa-regular fa-calendar"></i> ${formatarDataBR(c.data)} ${timeBadge}</span>
+                                </div>
+                            </div>
+                            <span class="status-badge ${badgeClass}">${c.status}</span>
+                        </div>
+                        
+                        <div class="row-body">
+                            <strong>Resumo:</strong> ${c.desc} <br>
+                            <span style="display:inline-block; margin-top:5px; font-size:0.8rem; color:var(--primary); font-weight:700; text-transform:uppercase;">
+                                PARCEIRO: ${c.inv}
+                            </span>
+                        </div>
+                        
+                        <div class="row-footer">
+                            <span class="valor-causa">${formatarMoeda(c.valor)}</span>
+                            
+                            <select class="action-select" onchange="mudarStatusPlanilha('${c.nome}', this.value, this)">
+                                <option value="Pendente" ${c.status === 'Pendente' ? 'selected' : ''}>⏳ Pendente</option>
+                                <option value="Recebido" ${c.status === 'Recebido' ? 'selected' : ''}>✅ Recebido</option>
                             </select>
                         </div>
                     </div>
@@ -506,7 +756,6 @@
             });
         }
 
-        // ================= RENDER INVESTIDOR =================
         function renderInvestidor() {
             const div = document.getElementById('lista-investidor');
             div.innerHTML = '';
@@ -515,7 +764,11 @@
             let arrayLucros = new Array(12).fill(0);
 
             if(meusCasos.length === 0) {
-                div.innerHTML = `<p style="color:#EBEBF599; text-align:center; padding-top:30px;">Nenhum caso associado localizado.</p>`;
+                div.innerHTML = `
+                    <div style="text-align:center; padding:50px 20px; color:var(--text-gray);">
+                        <i class="fa-solid fa-chart-pie" style="font-size:3rem; margin-bottom:15px; opacity:0.6;"></i>
+                        <p style="font-family:var(--font-title); font-size:1.1rem;">Sem contratos no momento.</p>
+                    </div>`;
                 renderGrafico(arrayLucros);
                 return;
             }
@@ -524,30 +777,44 @@
 
             ordenados.forEach(c => {
                 const dataFormatada = parseDataReal(c.data);
-                const mes = dataFormatada.getMonth() + 1; // 1 a 12
+                const mes = dataFormatada.getMonth() + 1;
 
+                // CORREÇÃO: Junior sempre recebe exatamente 6% do valor, independente do mês.
                 let lucroLiquido = 0;
-                if(usuarioLogado === 'junior' && mes >= 1 && mes <= 6) {
+                if(usuarioLogado === 'junior') {
                     lucroLiquido = c.valor * 0.06;
                 } else {
-                    lucroLiquido = c.valor * 0.10; 
+                    lucroLiquido = c.valor * 0.10; // Caso seja a Fernanda ou outro perfil
                 }
 
                 if(mes >= 1 && mes <= 12) arrayLucros[mes - 1] += lucroLiquido;
                 
                 const isRecebido = c.status.toLowerCase() === 'recebido';
                 const badgeClass = isRecebido ? 'recebido' : 'pendente';
-                const cardClass = isRecebido ? 'recebido-card' : '';
+                const cardClass = isRecebido ? 'status-recebido' : '';
                 const timeBadge = gerarBadgeTempo(c.data, c.status);
 
                 div.innerHTML += `
-                    <div class="apple-client-card ${cardClass}">
-                        <h3>${c.nome} <span class="badge ${badgeClass}">${c.status}</span></h3>
-                        <p><strong>Julgamento:</strong> ${formatarDataBR(c.data)} ${timeBadge}</p>
-                        <p><strong>Processo:</strong> ${c.desc}</p>
-                        <div class="lucro-box">
-                            <span>Lucro Líquido Real</span>
-                            <strong>R$ ${lucroLiquido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                    <div class="client-row ${cardClass}">
+                        <div class="row-header">
+                            <div>
+                                <h4 class="client-name">${c.nome}</h4>
+                                <div class="client-meta">
+                                    <span><i class="fa-regular fa-calendar"></i> Julgamento: ${formatarDataBR(c.data)} ${timeBadge}</span>
+                                </div>
+                            </div>
+                            <span class="status-badge ${badgeClass}">${c.status}</span>
+                        </div>
+                        
+                        <div class="row-body">
+                            ${c.desc}
+                        </div>
+                        
+                        <div class="row-footer" style="border: none; padding-top: 5px;">
+                            <div class="financial-highlight">
+                                <span>Lucro (6% Fixo)</span>
+                                <strong>${formatarMoeda(lucroLiquido)}</strong>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -559,15 +826,72 @@
         function renderGrafico(dados) {
             const ctx = document.getElementById('chartLucros').getContext('2d');
             if(meuGrafico) meuGrafico.destroy();
+            
+            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, '#05CD99');
+            gradient.addColorStop(1, 'rgba(5, 205, 153, 0.2)');
+
+            Chart.defaults.font.family = "'DM Sans', sans-serif";
+            
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const tickColor = isDark ? '#94A3B8' : '#A3AED0';
+            const gridColor = isDark ? '#334155' : '#E9EDF7';
+
             meuGrafico = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    datasets: [{ label: 'Lucro Previsto (R$)', data: dados, backgroundColor: '#32D74B', borderRadius: 6 }]
+                    datasets: [{ 
+                        label: 'Receita Líquida', 
+                        data: dados, 
+                        backgroundColor: gradient, 
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#04A87D'
+                    }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#EBEBF599', font: {size: 11} } }, x: { grid: { display: false }, ticks: { color: '#EBEBF599', font: {size: 11} } } }, plugins: { legend: { display: false } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: { 
+                        y: { 
+                            border: { display: false },
+                            grid: { color: gridColor, drawBorder: false }, 
+                            ticks: { 
+                                color: tickColor, font: {size: 11, weight: 500},
+                                callback: function(value) { 
+                                    if(value === 0) return 'R$ 0';
+                                    return 'R$ ' + (value/1000).toFixed(1) + 'k'; 
+                                }
+                            } 
+                        }, 
+                        x: { 
+                            grid: { display: false }, 
+                            ticks: { color: tickColor, font: {size: 11, weight: 500} } 
+                        } 
+                    }, 
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1E293B',
+                            titleFont: {family: 'Poppins', size: 14, weight: 600},
+                            bodyFont: {family: 'DM Sans', size: 14},
+                            padding: 15,
+                            cornerRadius: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Líquido: ' + new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                                }
+                            }
+                        }
+                    } 
+                }
             });
         }
+        
+        document.getElementById('login-pass').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') fazerLogin();
+        });
     </script>
 </body>
 </html>
