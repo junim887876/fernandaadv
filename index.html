@@ -2,9 +2,11 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- Meta tag blindada para evitar zoom e escalonamento indesejado em dispositivos móveis -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fernanda Mendes | Gestão Jurídica Premium</title>
     
+    <!-- Fontes Premium: Poppins para Títulos e DM Sans para Dados -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,7 +16,6 @@
            SISTEMA DE DESIGN: VARIÁVEIS BASE (LIGHT E DARK)
            ========================================================= */
         :root {
-            /* Tema Light (Padrão) */
             --bg-body: #F4F7FE;
             --bg-card: #FFFFFF;
             --bg-input: #FFFFFF;
@@ -27,12 +28,10 @@
             --shadow-soft: 0px 18px 40px rgba(112, 144, 176, 0.12);
             --shadow-hover: 0px 20px 50px rgba(67, 24, 255, 0.15);
             
-            /* Status Cores Padrão */
             --success: #05CD99;
             --warning: #FFCE20;
             --danger: #EE5D50;
             
-            /* Tipografia e Estrutura */
             --font-title: 'Poppins', sans-serif;
             --font-body: 'DM Sans', sans-serif;
             --radius-lg: 20px;
@@ -41,20 +40,19 @@
 
         /* TEMA DARK MODE */
         [data-theme="dark"] {
-            --bg-body: #0F172A; /* Slate 900 */
-            --bg-card: #1E293B; /* Slate 800 */
+            --bg-body: #0F172A;
+            --bg-card: #1E293B;
             --bg-input: #0F172A;
-            --primary: #6366F1; /* Indigo 500 (mais visível no escuro) */
+            --primary: #6366F1;
             --primary-hover: #818CF8;
-            --text-dark: #F8FAFC; /* Quase branco */
-            --text-gray: #94A3B8; /* Slate 400 */
-            --border-color: #334155; /* Slate 700 */
+            --text-dark: #F8FAFC;
+            --text-gray: #94A3B8;
+            --border-color: #334155;
             --row-hover: #334155;
             --shadow-soft: 0px 10px 30px rgba(0, 0, 0, 0.4);
             --shadow-hover: 0px 15px 40px rgba(99, 102, 241, 0.2);
         }
 
-        /* Transições suaves para a troca de tema */
         * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s ease, border-color 0.3s ease; }
         
         body { 
@@ -62,6 +60,11 @@
             background-color: var(--bg-body); color: var(--text-dark);
             font-family: var(--font-body);
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* CORREÇÃO ANTI-ZOOM iOS/Android: Forçar fonte a 16px em todos os inputs */
+        input, select, textarea {
+            font-size: 16px !important;
         }
         
         ::-webkit-scrollbar { width: 6px; }
@@ -108,7 +111,7 @@
         .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; }
         .input-group input {
             width: 100%; height: 50px; background: var(--bg-input); border: 1px solid var(--border-color);
-            border-radius: var(--radius-md); padding: 0 20px; font-size: 1rem; color: var(--text-dark);
+            border-radius: var(--radius-md); padding: 0 20px; color: var(--text-dark);
             font-family: var(--font-body); transition: 0.3s;
         }
         .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); outline: none; }
@@ -132,7 +135,6 @@
         
         .user-controls { display: flex; align-items: center; gap: 15px; }
         
-        /* Botão Tema */
         .btn-theme {
             background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-dark);
             width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
@@ -165,6 +167,17 @@
         .welcome-text h2 { font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 5px; color:#FFF;}
         .welcome-text p { color: rgba(255,255,255,0.8); font-size: 1rem; }
 
+        /* WIDGETS DE RESUMO FINANCEIRO (INVESTIDOR) */
+        .summary-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .summary-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 25px; display: flex; align-items: center; gap: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-soft); }
+        .summary-card .summary-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
+        .summary-card.pendente .summary-icon { background: rgba(255, 152, 0, 0.15); color: #F57C00; }
+        .summary-card.recebido .summary-icon { background: rgba(5, 205, 153, 0.15); color: #04A87D; }
+        [data-theme="dark"] .summary-card.pendente .summary-icon { color: #FFB74D; }
+        [data-theme="dark"] .summary-card.recebido .summary-icon { color: #6EE7B7; }
+        .summary-info span { font-size: 0.85rem; color: var(--text-gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px; }
+        .summary-info h3 { font-family: var(--font-title); font-size: 2rem; color: var(--text-dark); line-height: 1; }
+
         .grid-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
         .grid-investidor { grid-template-columns: 1fr 1.2fr; }
 
@@ -178,7 +191,7 @@
         .form-label { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block; }
         .form-control {
             width: 100%; background: var(--bg-body); border: 1px solid var(--border-color);
-            border-radius: var(--radius-md); padding: 12px 16px; font-size: 0.95rem; 
+            border-radius: var(--radius-md); padding: 12px 16px; 
             color: var(--text-dark); font-family: var(--font-body); transition: 0.3s;
         }
         .form-control:focus { background: var(--bg-input); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); outline: none; }
@@ -215,13 +228,12 @@
 
         .action-select {
             background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-dark);
-            padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            padding: 8px 12px; border-radius: 8px; font-weight: 600;
             cursor: pointer; outline: none; transition: 0.2s;
         }
         .action-select:focus { border-color: var(--primary); }
         .action-select option { background: var(--bg-card); color: var(--text-dark); }
 
-        /* Dashboard Investidor - Destaque Financeiro */
         .financial-highlight {
             background: rgba(5, 205, 153, 0.1); border: 1px solid rgba(5, 205, 153, 0.2);
             border-radius: var(--radius-md); padding: 15px 20px; display: inline-flex; flex-direction: column; width: 100%;
@@ -249,7 +261,7 @@
         /* =========================================================
            RESPONSIVIDADE E ADAPTAÇÃO TOTAL (Mobile, Tablet, Desktop)
            ========================================================= */
-        @media (max-width: 1024px) { /* Tablets */
+        @media (max-width: 1024px) {
             .grid-layout, .grid-investidor { grid-template-columns: 1fr; }
             .form-wrapper { order: 2; }
             .list-wrapper { order: 1; }
@@ -257,18 +269,19 @@
             .dashboard-content { padding: 30px 20px; }
         }
         
-        @media (max-width: 768px) { /* Mobile Grande */
+        @media (max-width: 768px) {
             .login-image-side { display: none; }
             .welcome-banner { flex-direction: column; text-align: left; padding: 25px 20px; align-items: flex-start;}
             .welcome-banner::after { display: none; }
-            .user-info span { display: none; } /* Esconde o nome no topbar para poupar espaço */
+            .user-info span { display: none; } 
             .user-info small { display: none; }
             .topbar-logo { font-size: 1.2rem; }
-            .btn-logout span { display: none; } /* Deixa só o ícone de sair */
+            .btn-logout span { display: none; } 
             .btn-logout { padding: 8px 10px; }
+            .summary-cards { grid-template-columns: 1fr; gap: 15px; }
         }
 
-        @media (max-width: 480px) { /* Mobile Pequeno */
+        @media (max-width: 480px) {
             .dashboard-content { padding: 20px 15px; }
             .saas-card { padding: 20px 15px; }
             .client-row { padding: 15px; }
@@ -282,6 +295,7 @@
 
     <div id="toast-container"></div>
 
+    <!-- TELA DE LOGIN -->
     <div id="login-view" class="view-container active">
         <div class="login-image-side">
             <div class="login-image-overlay"></div>
@@ -313,6 +327,7 @@
         </div>
     </div>
 
+    <!-- TELA DA ADVOGADA -->
     <div id="advogado-view" class="view-container">
         <header class="topbar">
             <div class="topbar-logo"><i class="fa-solid fa-scale-balanced"></i> F.Mendes</div>
@@ -370,12 +385,14 @@
                         <p>Ordenados por proximidade do prazo.</p>
                     </div>
                     <div class="list-container" id="lista-advogada">
-                        </div>
+                        <!-- Conteúdo injetado pelo JS -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- TELA DO INVESTIDOR -->
     <div id="investidor-view" class="view-container">
         <header class="topbar">
             <div class="topbar-logo"><i class="fa-solid fa-chart-line"></i> Portal do <span>Investidor</span></div>
@@ -400,6 +417,24 @@
                 </div>
             </div>
 
+            <!-- NOVOS CARDS DE RESUMO FINANCEIRO -->
+            <div class="summary-cards">
+                <div class="summary-card pendente">
+                    <div class="summary-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="summary-info">
+                        <span>A Receber (Pendente)</span>
+                        <h3 id="inv-total-pendente">R$ 0,00</h3>
+                    </div>
+                </div>
+                <div class="summary-card recebido">
+                    <div class="summary-icon"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="summary-info">
+                        <span>Já Recebido (Concluído)</span>
+                        <h3 id="inv-total-recebido">R$ 0,00</h3>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid-layout grid-investidor">
                 <div class="saas-card">
                     <div class="saas-card-header">
@@ -407,7 +442,8 @@
                         <p>Histórico de operações ativas.</p>
                     </div>
                     <div class="list-container" id="lista-investidor">
-                        </div>
+                        <!-- Conteúdo injetado pelo JS -->
+                    </div>
                 </div>
 
                 <div class="saas-card">
@@ -423,6 +459,7 @@
         </div>
     </div>
 
+    <!-- LÓGICA DO SISTEMA -->
     <script>
         // --- 1. LÓGICA DO DARK MODE / TEMA ---
         function initTheme() {
@@ -439,7 +476,6 @@
             localStorage.setItem('fm_theme', newTheme);
             updateThemeIcon();
 
-            // Atualiza as cores do gráfico se ele estiver aberto
             if(meuGrafico) {
                 const isDark = newTheme === 'dark';
                 meuGrafico.options.scales.y.ticks.color = isDark ? '#94A3B8' : '#A3AED0';
@@ -455,9 +491,7 @@
             });
         }
         
-        // Inicializa o tema ao carregar
         initTheme();
-
 
         // --- 2. CONFIGURAÇÕES DE BANCO DE DADOS ---
         const SHEET_ID = '1WMUKbr-gNUDIql29huUskmSinfQfAC_5ZPU4lVnHWPU';
@@ -762,6 +796,10 @@
             
             const meusCasos = dbClientes.filter(c => c.inv.includes(usuarioLogado));
             let arrayLucros = new Array(12).fill(0);
+            
+            // Variáveis para o somatório total
+            let totalPendente = 0;
+            let totalRecebido = 0;
 
             if(meusCasos.length === 0) {
                 div.innerHTML = `
@@ -769,6 +807,8 @@
                         <i class="fa-solid fa-chart-pie" style="font-size:3rem; margin-bottom:15px; opacity:0.6;"></i>
                         <p style="font-family:var(--font-title); font-size:1.1rem;">Sem contratos no momento.</p>
                     </div>`;
+                document.getElementById('inv-total-pendente').innerText = "R$ 0,00";
+                document.getElementById('inv-total-recebido').innerText = "R$ 0,00";
                 renderGrafico(arrayLucros);
                 return;
             }
@@ -779,17 +819,26 @@
                 const dataFormatada = parseDataReal(c.data);
                 const mes = dataFormatada.getMonth() + 1;
 
-                // CORREÇÃO: Junior sempre recebe exatamente 6% do valor, independente do mês.
+                // Junior sempre recebe 6% exatos sobre a causa
                 let lucroLiquido = 0;
                 if(usuarioLogado === 'junior') {
                     lucroLiquido = c.valor * 0.06;
                 } else {
-                    lucroLiquido = c.valor * 0.10; // Caso seja a Fernanda ou outro perfil
+                    lucroLiquido = c.valor * 0.10; 
                 }
 
+                // Acumula para o gráfico mensal
                 if(mes >= 1 && mes <= 12) arrayLucros[mes - 1] += lucroLiquido;
                 
                 const isRecebido = c.status.toLowerCase() === 'recebido';
+                
+                // Acumula os valores globais para os cards no topo
+                if(isRecebido) {
+                    totalRecebido += lucroLiquido;
+                } else {
+                    totalPendente += lucroLiquido;
+                }
+
                 const badgeClass = isRecebido ? 'recebido' : 'pendente';
                 const cardClass = isRecebido ? 'status-recebido' : '';
                 const timeBadge = gerarBadgeTempo(c.data, c.status);
@@ -819,6 +868,10 @@
                     </div>
                 `;
             });
+
+            // Atualiza o painel superior de somatórios
+            document.getElementById('inv-total-pendente').innerText = formatarMoeda(totalPendente);
+            document.getElementById('inv-total-recebido').innerText = formatarMoeda(totalRecebido);
 
             renderGrafico(arrayLucros);
         }
