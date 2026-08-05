@@ -80,50 +80,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         /* =========================================================
-           TELA DE LOGIN
-           ========================================================= */
-        #login-view { background: var(--bg-body); }
-        #login-view.active { flex-direction: row; align-items: stretch; }
-        
-        .login-image-side {
-            flex: 1; display: none; background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop') center/cover;
-            position: relative;
-        }
-        @media (min-width: 900px) { .login-image-side { display: flex; flex-direction: column; justify-content: flex-end; padding: 60px; } }
-        
-        .login-image-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(67,24,255,0.4) 0%, rgba(11,20,55,0.95) 100%); }
-        .login-marketing-text { position: relative; z-index: 2; color: #FFF; max-width: 500px; }
-        .login-marketing-text h2 { font-family: var(--font-title); font-size: 2.5rem; line-height: 1.2; margin-bottom: 15px; }
-        .login-marketing-text p { font-size: 1.1rem; opacity: 0.9; }
-
-        .login-form-side {
-            flex: 1; display: flex; align-items: center; justify-content: center;
-            padding: 40px 20px; background: var(--bg-card);
-        }
-        
-        .login-box { width: 100%; max-width: 420px; }
-        .brand-logo-login { color: var(--primary); font-family: var(--font-title); font-size: 2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
-        
-        .login-box h3 { font-family: var(--font-title); font-size: 2.2rem; color: var(--text-dark); margin-bottom: 10px; }
-        .login-box p { color: var(--text-gray); margin-bottom: 35px; font-size: 1rem; }
-        
-        .input-group { margin-bottom: 25px; position: relative; }
-        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; }
-        .input-group input {
-            width: 100%; height: 50px; background: var(--bg-input); border: 1px solid var(--border-color);
-            border-radius: var(--radius-md); padding: 0 20px; color: var(--text-dark);
-            font-family: var(--font-body); transition: 0.3s;
-        }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); outline: none; }
-        
-        .btn-corporate {
-            width: 100%; height: 50px; background: var(--primary); color: #FFF; border: none;
-            border-radius: var(--radius-md); font-family: var(--font-title); font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .btn-corporate:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-
-        /* =========================================================
            TOPBAR E NAVEGAÇÃO
            ========================================================= */
         .topbar {
@@ -148,8 +104,12 @@
         .user-info span { font-weight: 700; font-family: var(--font-title); font-size: 0.95rem; color: var(--text-dark);}
         .user-info small { color: var(--text-gray); font-size: 0.8rem; }
         
-        .btn-logout { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-        .btn-logout:hover { background: rgba(238, 93, 80, 0.1); }
+        .btn-corporate {
+            width: 100%; height: 50px; background: var(--primary); color: #FFF; border: none;
+            border-radius: var(--radius-md); font-family: var(--font-title); font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-corporate:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 
         /* =========================================================
            DASHBOARDS E CONTEÚDO
@@ -270,14 +230,11 @@
         }
         
         @media (max-width: 768px) {
-            .login-image-side { display: none; }
             .welcome-banner { flex-direction: column; text-align: left; padding: 25px 20px; align-items: flex-start;}
             .welcome-banner::after { display: none; }
             .user-info span { display: none; } 
             .user-info small { display: none; }
             .topbar-logo { font-size: 1.2rem; }
-            .btn-logout span { display: none; } 
-            .btn-logout { padding: 8px 10px; }
             .summary-cards { grid-template-columns: 1fr; gap: 15px; }
         }
 
@@ -295,40 +252,8 @@
 
     <div id="toast-container"></div>
 
-    <!-- TELA DE LOGIN -->
-    <div id="login-view" class="view-container active">
-        <div class="login-image-side">
-            <div class="login-image-overlay"></div>
-            <div class="login-marketing-text">
-                <h2>Gestão Estratégica para o seu Escritório.</h2>
-                <p>Tenha o controle absoluto dos seus processos, acompanhamento de honorários e rentabilidade em uma interface inteligente e veloz.</p>
-            </div>
-        </div>
-        
-        <div class="login-form-side">
-            <div class="login-box">
-                <div class="brand-logo-login"><i class="fa-solid fa-scale-balanced"></i> F.Mendes</div>
-                <h3>Bem-vindo(a)</h3>
-                <p>Insira suas credenciais para acessar o painel corporativo.</p>
-                
-                <div class="input-group">
-                    <label>Usuário de Acesso</label>
-                    <input type="text" id="login-email" placeholder="Ex: fernanda" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <label>Senha de Segurança</label>
-                    <input type="password" id="login-pass" placeholder="••••••••">
-                </div>
-                
-                <button class="btn-corporate" onclick="fazerLogin()" style="margin-top: 10px;">
-                    Acessar Plataforma <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- TELA DA ADVOGADA -->
-    <div id="advogado-view" class="view-container">
+    <div id="advogado-view" class="view-container active">
         <header class="topbar">
             <div class="topbar-logo"><i class="fa-solid fa-scale-balanced"></i> F.Mendes</div>
             <div class="user-controls">
@@ -339,7 +264,6 @@
                         <small>Gestão Central</small>
                     </div>
                     <div class="avatar">F</div>
-                    <button class="btn-logout" onclick="logout()" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Sair</span></button>
                 </div>
             </div>
         </header>
@@ -361,14 +285,11 @@
                     
                     <div class="form-grid">
                         <div><label class="form-label">Nome do Cliente</label><input type="text" class="form-control" id="adv-nome" placeholder="Nome completo"></div>
-                        <div><label class="form-label">WhatsApp Contato</label><input type="tel" class="form-control" id="adv-wpp" placeholder="(00) 00000-0000"></div>
-                        <div><label class="form-label">Data Limite / Julgamento</label><input type="date" class="form-control" id="adv-data"></div>
                         <div><label class="form-label">Síntese do Processo</label><textarea class="form-control" id="adv-desc" placeholder="Detalhes da ação..."></textarea></div>
                         <div>
                             <label class="form-label">Parceiro / Investidor</label>
                             <select class="form-control" id="adv-investidor">
-                                <option value="junior">Júnior (Rentabilidade 6% Fixa)</option>
-                                <option value="fernanda">Fernanda (Integral)</option>
+                                <option value="junior">Júnior (Rentabilidade 50% Fixa)</option>
                             </select>
                         </div>
                         <div><label class="form-label">Valor Total da Causa (R$)</label><input type="number" class="form-control" id="adv-valor" step="0.01" placeholder="0.00"></div>
@@ -382,7 +303,7 @@
                 <div class="saas-card list-wrapper">
                     <div class="saas-card-header">
                         <h3>Processos em Andamento</h3>
-                        <p>Ordenados por proximidade do prazo.</p>
+                        <p>Ordenados por status.</p>
                     </div>
                     <div class="list-container" id="lista-advogada">
                         <!-- Conteúdo injetado pelo JS -->
@@ -392,7 +313,7 @@
         </div>
     </div>
 
-    <!-- TELA DO INVESTIDOR -->
+    <!-- TELA DO INVESTIDOR (MANTIDA NO CÓDIGO MAS INACESSÍVEL POR PADRÃO) -->
     <div id="investidor-view" class="view-container">
         <header class="topbar">
             <div class="topbar-logo"><i class="fa-solid fa-chart-line"></i> Portal do <span>Investidor</span></div>
@@ -400,11 +321,10 @@
                 <button class="btn-theme" onclick="toggleTheme()" title="Alternar Tema Escuro/Claro"><i class="fa-solid fa-moon"></i></button>
                 <div class="user-profile">
                     <div class="user-info">
-                        <span id="inv-titulo">Bem-vindo</span>
+                        <span id="inv-titulo">Olá, Júnior</span>
                         <small>Acompanhamento</small>
                     </div>
                     <div class="avatar" style="background:var(--success);">J</div>
-                    <button class="btn-logout" onclick="logout()" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Sair</span></button>
                 </div>
             </div>
         </header>
@@ -412,7 +332,7 @@
         <div class="dashboard-content">
             <div class="welcome-banner" style="background: linear-gradient(135deg, #05CD99 0%, #038A66 100%);">
                 <div class="welcome-text">
-                    <h2>Análise de Rentabilidade Fixa (6%)</h2>
+                    <h2>Análise de Rentabilidade Fixa (50%)</h2>
                     <p>Acompanhe os lucros líquidos das suas causas de forma transparente e precisa.</p>
                 </div>
             </div>
@@ -449,7 +369,7 @@
                 <div class="saas-card">
                     <div class="saas-card-header">
                         <h3>Projeção de Receita (Mensal)</h3>
-                        <p>Visão gráfica baseada na rentabilidade de 6% sobre os processos.</p>
+                        <p>Visão gráfica baseada na rentabilidade de 50% sobre os processos.</p>
                     </div>
                     <div style="width: 100%; height: 380px; margin-top: 20px; position: relative;">
                         <canvas id="chartLucros"></canvas>
@@ -461,7 +381,23 @@
 
     <!-- LÓGICA DO SISTEMA -->
     <script>
-        // --- 1. LÓGICA DO DARK MODE / TEMA ---
+        // --- 1. VARIÁVEIS GLOBAIS E INICIALIZAÇÃO ---
+        const SHEET_ID = '1WMUKbr-gNUDIql29huUskmSinfQfAC_5ZPU4lVnHWPU';
+        const URL_ADVOGADA = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=advogada`;
+        const FORM_POST_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdiOe4Vbi8Lc852CU8sdjLZhtYk2T5yhynMXCBUfguziKZPRQ/formResponse";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzux8DtRoK-qMbE-xrY38KYoRNASNYZVXCFpsbYtMpBRmDENUH0CJpnR3YvAlO3qzsY/exec";
+
+        let dbClientes = [];
+        let usuarioLogado = 'fernanda'; // Definido como Fernanda por padrão (Acesso Direto)
+        let meuGrafico = null;
+
+        // Iniciar aplicação automaticamente ao carregar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            sincronizarGoogleSheets();
+        });
+
+        // --- 2. LÓGICA DO DARK MODE / TEMA ---
         function initTheme() {
             const savedTheme = localStorage.getItem('fm_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -490,18 +426,6 @@
                 btn.innerHTML = isDark ? '<i class="fa-solid fa-sun" style="color:#FFB74D;"></i>' : '<i class="fa-solid fa-moon"></i>';
             });
         }
-        
-        initTheme();
-
-        // --- 2. CONFIGURAÇÕES DE BANCO DE DADOS ---
-        const SHEET_ID = '1WMUKbr-gNUDIql29huUskmSinfQfAC_5ZPU4lVnHWPU';
-        const URL_ADVOGADA = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=advogada`;
-        const FORM_POST_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdiOe4Vbi8Lc852CU8sdjLZhtYk2T5yhynMXCBUfguziKZPRQ/formResponse";
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzux8DtRoK-qMbE-xrY38KYoRNASNYZVXCFpsbYtMpBRmDENUH0CJpnR3YvAlO3qzsY/exec";
-
-        let dbClientes = [];
-        let usuarioLogado = null;
-        let meuGrafico = null;
 
         // --- 3. UTILITÁRIOS E PARSERS ---
         function showToast(message, type = 'success') {
@@ -518,11 +442,6 @@
                 toast.style.animation = 'fadeOutRight 0.4s forwards';
                 setTimeout(() => toast.remove(), 400);
             }, 3500);
-        }
-
-        function mudarTela(idTela) {
-            document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
-            document.getElementById(idTela).classList.add('active');
         }
 
         function parseCSVLine(text) {
@@ -549,52 +468,15 @@
             return new Date(dataStr);
         }
 
-        function formatarDataBR(dataStr) {
-            const d = parseDataReal(dataStr);
-            const dia = String(d.getDate()).padStart(2, '0');
-            const mes = String(d.getMonth() + 1).padStart(2, '0');
-            const ano = d.getFullYear();
-            return `${dia}/${mes}/${ano}`;
-        }
-
         function formatarMoeda(valor) {
             return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        function gerarBadgeTempo(dataStr, status) {
-            if (status.toLowerCase().trim() === 'recebido') return ''; 
-            
-            const hoje = new Date();
-            hoje.setHours(0,0,0,0);
-            
-            const dataCaso = parseDataReal(dataStr);
-            dataCaso.setHours(0,0,0,0);
-
-            const diffTime = dataCaso - hoje;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            if(diffDays === 0) return `<strong style="color:var(--warning); margin-left:6px; font-size: 0.8rem;">(Hoje)</strong>`;
-            if(diffDays === 1) return `<strong style="color:var(--success); margin-left:6px; font-size: 0.8rem;">(Amanhã)</strong>`;
-            if(diffDays > 1) return `<span style="color:var(--text-gray); margin-left:6px; font-size: 0.8rem;">(Em ${diffDays} dias)</span>`;
-            if(diffDays < 0) return `<strong style="color:var(--danger); margin-left:6px; font-size: 0.8rem;">(Atrasado ${Math.abs(diffDays)}d)</strong>`;
-            return '';
-        }
-
         function ordenarCasosPrioridade(casos) {
-            const hoje = new Date();
-            hoje.setHours(0,0,0,0);
-
             return [...casos].sort((a, b) => {
                 const statusA = a.status.toLowerCase().trim() === 'pendente' ? 0 : 1;
                 const statusB = b.status.toLowerCase().trim() === 'pendente' ? 0 : 1;
-                if (statusA !== statusB) return statusA - statusB;
-
-                const dA = parseDataReal(a.data);
-                const dB = parseDataReal(b.data);
-                const diffA = Math.abs(dA - hoje);
-                const diffB = Math.abs(dB - hoje);
-
-                return diffA - diffB;
+                return statusA - statusB;
             });
         }
 
@@ -615,10 +497,9 @@
                         novosClientes.push({
                             id: i,
                             nome: colunas[1].replace(/"/g, '').trim(),
-                            wpp: colunas[2].replace(/"/g, '').trim(),
-                            data: colunas[3].replace(/"/g, '').trim(), 
-                            desc: colunas[4].replace(/"/g, '').trim(),
-                            inv: colunas[5].replace(/"/g, '').toLowerCase().trim(),
+                            data: colunas[3] ? colunas[3].replace(/"/g, '').trim() : '', 
+                            desc: colunas[4] ? colunas[4].replace(/"/g, '').trim() : '',
+                            inv: colunas[5] ? colunas[5].replace(/"/g, '').toLowerCase().trim() : 'junior',
                             valor: parseFloat(colunas[6].replace(/"/g, '').replace(',','.')) || 0,
                             status: statusPlanilha
                         });
@@ -635,14 +516,12 @@
 
         async function enviarParaGoogleFormsOculto() {
             const nome = document.getElementById('adv-nome').value.trim();
-            const wpp = document.getElementById('adv-wpp').value.trim();
-            const data = document.getElementById('adv-data').value.trim();
             const desc = document.getElementById('adv-desc').value.trim();
             const inv = document.getElementById('adv-investidor').value.trim();
             const valor = document.getElementById('adv-valor').value.trim();
 
-            if(!nome || !data || !valor) {
-                showToast("Preencha Nome, Data e Valor.", "error");
+            if(!nome || !valor) {
+                showToast("Preencha Nome e Valor.", "error");
                 return;
             }
 
@@ -654,8 +533,6 @@
 
             const formData = new URLSearchParams();
             formData.append("entry.1644216679", nome);
-            formData.append("entry.87990341", wpp);
-            formData.append("entry.266920253", data);
             formData.append("entry.1034218931", desc);
             formData.append("entry.146227971", inv);
             formData.append("entry.1540368822", valor);
@@ -663,7 +540,7 @@
             try {
                 await fetch(FORM_POST_URL, { method: 'POST', mode: 'no-cors', body: formData });
 
-                ['adv-nome', 'adv-wpp', 'adv-data', 'adv-desc', 'adv-valor'].forEach(id => document.getElementById(id).value = '');
+                ['adv-nome', 'adv-desc', 'adv-valor'].forEach(id => document.getElementById(id).value = '');
 
                 setTimeout(async () => {
                     await sincronizarGoogleSheets();
@@ -704,38 +581,7 @@
             }
         }
 
-        // --- 5. LÓGICA DE SESSÃO E RENDERIZAÇÃO DAS TELAS ---
-        async function fazerLogin() {
-            const email = document.getElementById('login-email').value.trim().toLowerCase();
-            const senha = document.getElementById('login-pass').value.trim();
-            const btn = document.querySelector('.login-form-side .btn-corporate');
-
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
-
-            setTimeout(async () => {
-                if (email === 'fernanda' && senha === 'fernanda') {
-                    usuarioLogado = 'fernanda';
-                    mudarTela('advogado-view');
-                    await sincronizarGoogleSheets();
-                } else if (email === 'junior' && senha === 'junior') {
-                    usuarioLogado = 'junior';
-                    document.getElementById('inv-titulo').innerText = `Olá, Júnior`;
-                    mudarTela('investidor-view');
-                    await sincronizarGoogleSheets();
-                } else {
-                    showToast("Credenciais incorretas.", "error");
-                }
-                btn.innerHTML = 'Acessar Plataforma <i class="fa-solid fa-arrow-right"></i>';
-            }, 600);
-        }
-
-        function logout() {
-            usuarioLogado = null;
-            document.getElementById('login-email').value = '';
-            document.getElementById('login-pass').value = '';
-            mudarTela('login-view');
-        }
-
+        // --- 5. RENDERIZAÇÃO DAS TELAS ---
         function renderAdvogada() {
             const div = document.getElementById('lista-advogada');
             div.innerHTML = '';
@@ -755,17 +601,12 @@
                 const isRecebido = c.status.toLowerCase() === 'recebido';
                 const badgeClass = isRecebido ? 'recebido' : 'pendente';
                 const cardClass = isRecebido ? 'status-recebido' : '';
-                const timeBadge = gerarBadgeTempo(c.data, c.status);
 
                 div.innerHTML += `
                     <div class="client-row ${cardClass}">
                         <div class="row-header">
                             <div>
                                 <h4 class="client-name">${c.nome}</h4>
-                                <div class="client-meta">
-                                    <span><i class="fa-brands fa-whatsapp"></i> ${c.wpp}</span>
-                                    <span><i class="fa-regular fa-calendar"></i> ${formatarDataBR(c.data)} ${timeBadge}</span>
-                                </div>
                             </div>
                             <span class="status-badge ${badgeClass}">${c.status}</span>
                         </div>
@@ -819,10 +660,9 @@
                 const dataFormatada = parseDataReal(c.data);
                 const mes = dataFormatada.getMonth() + 1;
 
-                // Junior sempre recebe 6% exatos sobre a causa
                 let lucroLiquido = 0;
                 if(usuarioLogado === 'junior') {
-                    lucroLiquido = c.valor * 0.06;
+                    lucroLiquido = c.valor * 0.50; // Atualizado para 50%
                 } else {
                     lucroLiquido = c.valor * 0.10; 
                 }
@@ -841,16 +681,12 @@
 
                 const badgeClass = isRecebido ? 'recebido' : 'pendente';
                 const cardClass = isRecebido ? 'status-recebido' : '';
-                const timeBadge = gerarBadgeTempo(c.data, c.status);
 
                 div.innerHTML += `
                     <div class="client-row ${cardClass}">
                         <div class="row-header">
                             <div>
                                 <h4 class="client-name">${c.nome}</h4>
-                                <div class="client-meta">
-                                    <span><i class="fa-regular fa-calendar"></i> Julgamento: ${formatarDataBR(c.data)} ${timeBadge}</span>
-                                </div>
                             </div>
                             <span class="status-badge ${badgeClass}">${c.status}</span>
                         </div>
@@ -861,7 +697,7 @@
                         
                         <div class="row-footer" style="border: none; padding-top: 5px;">
                             <div class="financial-highlight">
-                                <span>Lucro (6% Fixo)</span>
+                                <span>Lucro (50% Fixo)</span>
                                 <strong>${formatarMoeda(lucroLiquido)}</strong>
                             </div>
                         </div>
@@ -941,10 +777,6 @@
                 }
             });
         }
-        
-        document.getElementById('login-pass').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') fazerLogin();
-        });
     </script>
 </body>
 </html>
