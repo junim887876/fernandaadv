@@ -1,0 +1,21 @@
+{
+  "short_name": "Advogada Fernanda",
+  "name": "Fernanda",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#2a004d",
+  "theme_color": "#4b0082",
+  "display": "standalone",
+  "orientation": "portrait"
+}
