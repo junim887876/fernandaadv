@@ -2,797 +2,936 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <!-- Configurações do PWA e Web App -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4b0082">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Urban Açaí">
-    <link rel="apple-touch-icon" href="logo.jpg">
-    <!-- Meta tag blindada para evitar zoom e escalonamento indesejado em dispositivos móveis -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Advogada Fernanda Mendes</title>
-    
-    <!-- Fontes Premium: Poppins para Títulos e DM Sans para Dados -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Dra. Fernanda</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* =========================================================
-           SISTEMA DE DESIGN: VARIÁVEIS BASE (LIGHT E DARK)
-           ========================================================= */
         :root {
-            --bg-body: #F4F7FE;
-            --bg-card: #FFFFFF;
-            --bg-input: #FFFFFF;
-            --primary: #4318FF;
-            --primary-hover: #3311DB;
-            --text-dark: #2B3674;
-            --text-gray: #A3AED0;
-            --border-color: #E9EDF7;
-            --row-hover: #F8FAFC;
-            --shadow-soft: 0px 18px 40px rgba(112, 144, 176, 0.12);
-            --shadow-hover: 0px 20px 50px rgba(67, 24, 255, 0.15);
-            
-            --success: #05CD99;
-            --warning: #FFCE20;
-            --danger: #EE5D50;
-            
-            --font-title: 'Poppins', sans-serif;
-            --font-body: 'DM Sans', sans-serif;
-            --radius-lg: 20px;
+            --bg-body: #F2F2F7;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-solid: #FFFFFF;
+            --bg-input: #EFEFF4;
+            --primary: #007AFF;
+            --primary-hover: #0056B3;
+            --text-dark: #1C1C1E;
+            --text-gray: #8E8E93;
+            --border-color: #E5E5EA;
+            --shadow-apple: 0 12px 32px rgba(0, 0, 0, 0.05);
+            --success: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --gold: #FFCC00;
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius-xl: 24px;
+            --radius-lg: 18px;
             --radius-md: 12px;
         }
 
-        /* TEMA DARK MODE */
         [data-theme="dark"] {
-            --bg-body: #0F172A;
-            --bg-card: #1E293B;
-            --bg-input: #0F172A;
-            --primary: #6366F1;
-            --primary-hover: #818CF8;
-            --text-dark: #F8FAFC;
-            --text-gray: #94A3B8;
-            --border-color: #334155;
-            --row-hover: #334155;
-            --shadow-soft: 0px 10px 30px rgba(0, 0, 0, 0.4);
-            --shadow-hover: 0px 15px 40px rgba(99, 102, 241, 0.2);
+            --bg-body: #000000;
+            --bg-card: rgba(28, 28, 30, 0.85);
+            --bg-card-solid: #1C1C1E;
+            --bg-input: #2C2C2E;
+            --primary: #0A84FF;
+            --primary-hover: #409CFF;
+            --text-dark: #F2F2F7;
+            --text-gray: #98989D;
+            --border-color: #38383A;
+            --shadow-apple: 0 12px 32px rgba(0, 0, 0, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
         
         body { 
-            width: 100vw; height: 100vh; overflow: hidden; 
-            background-color: var(--bg-body); color: var(--text-dark);
-            font-family: var(--font-body);
+            background-color: var(--bg-body); 
+            color: var(--text-dark); 
             -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* CORREÇÃO ANTI-ZOOM iOS/Android: Forçar fonte a 16px em todos os inputs */
-        input, select, textarea {
-            font-size: 16px !important;
-        }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--text-gray); border-radius: 10px; opacity: 0.5; }
+        input, select, textarea, button { font-size: 16px !important; }
 
-        .view-container { 
-            display: none !important; width: 100%; height: 100%; overflow-y: auto; 
-            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        .view-container.active { display: flex !important; flex-direction: column; }
+        .app-container { display: flex; flex-direction: column; min-height: 100vh; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        /* =========================================================
-           TOPBAR E NAVEGAÇÃO
-           ========================================================= */
         .topbar {
-            background: var(--bg-card); height: 80px; padding: 0 5%; display: flex; justify-content: space-between;
-            align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10;
+            background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            height: calc(60px + env(safe-area-inset-top)); 
+            padding: env(safe-area-inset-top) 1rem 0 1rem; 
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
         }
-        .topbar-logo { font-family: var(--font-title); font-size: 1.4rem; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
-        .topbar-logo span { color: var(--primary); }
+        .brand { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .brand i { color: var(--primary); }
+
+        .top-actions { display: flex; align-items: center; gap: 8px; }
+        .btn-icon {
+            background: var(--bg-input); border: none; color: var(--text-dark);
+            width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; position: relative;
+        }
+
+        .notification-badge { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; display: none; }
+
+        .nav-tabs {
+            background: var(--bg-card); backdrop-filter: blur(15px); display: flex; justify-content: flex-start; gap: 8px; padding: 10px 1rem;
+            border-bottom: 1px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch;
+        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
         
-        .user-controls { display: flex; align-items: center; gap: 15px; }
-        
-        .btn-theme {
-            background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-dark);
-            width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.2s; font-size: 1.1rem;
+        .tab-btn {
+            background: transparent; border: none; padding: 8px 16px; border-radius: var(--radius-md);
+            color: var(--text-gray); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.9rem !important;
         }
-        .btn-theme:hover { background: var(--border-color); }
+        .tab-btn.active { background: var(--primary); color: #FFF; box-shadow: 0 4px 14px rgba(0,122,255,0.3); }
 
-        .user-profile { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 42px; height: 42px; background: var(--primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #FFF; font-weight: bold; font-size: 1.1rem; }
-        .user-info { display: flex; flex-direction: column; text-align: right; }
-        .user-info span { font-weight: 700; font-family: var(--font-title); font-size: 0.95rem; color: var(--text-dark);}
-        .user-info small { color: var(--text-gray); font-size: 0.8rem; }
-        
-        .btn-corporate {
-            width: 100%; height: 50px; background: var(--primary); color: #FFF; border: none;
-            border-radius: var(--radius-md); font-family: var(--font-title); font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        .main-content { padding: 1rem; max-width: 1400px; width: 100%; margin: 0 auto; flex: 1; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .grid-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 1.5rem; }
+
+        /* OCULTA O FORMULÁRIO DE CADASTRO APENAS NO CELULAR */
+        @media (max-width: 899px) {
+            .form-cadastro-container {
+                display: none !important;
+            }
+            .grid-layout {
+                grid-template-columns: 1fr !important;
+            }
         }
-        .btn-corporate:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 
-        /* =========================================================
-           DASHBOARDS E CONTEÚDO
-           ========================================================= */
-        .dashboard-content { padding: 40px 5%; max-width: 1400px; margin: 0 auto; width: 100%; }
-
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, #1A0B6E 100%);
-            border-radius: var(--radius-lg); padding: 35px 40px; color: #FFF;
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
-            box-shadow: var(--shadow-soft); position: relative; overflow: hidden;
+        .apple-card-form {
+            background: var(--bg-card-solid); border-radius: var(--radius-xl); padding: 1.5rem;
+            border: 1px solid var(--border-color); box-shadow: var(--shadow-apple);
         }
-        [data-theme="dark"] .welcome-banner { background: linear-gradient(135deg, var(--primary) 0%, #312E81 100%); }
-        .welcome-banner::after { content: ''; position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; background: rgba(255,255,255,0.05); border-radius: 50%; }
-        .welcome-text h2 { font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 5px; color:#FFF;}
-        .welcome-text p { color: rgba(255,255,255,0.8); font-size: 1rem; }
+        .form-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 1.2rem; letter-spacing: -0.5px; }
 
-        /* WIDGETS DE RESUMO FINANCEIRO (INVESTIDOR) */
-        .summary-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
-        .summary-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 25px; display: flex; align-items: center; gap: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-soft); }
-        .summary-card .summary-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
-        .summary-card.pendente .summary-icon { background: rgba(255, 152, 0, 0.15); color: #F57C00; }
-        .summary-card.recebido .summary-icon { background: rgba(5, 205, 153, 0.15); color: #04A87D; }
-        [data-theme="dark"] .summary-card.pendente .summary-icon { color: #FFB74D; }
-        [data-theme="dark"] .summary-card.recebido .summary-icon { color: #6EE7B7; }
-        .summary-info span { font-size: 0.85rem; color: var(--text-gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px; }
-        .summary-info h3 { font-family: var(--font-title); font-size: 2rem; color: var(--text-dark); line-height: 1; }
-
-        .grid-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
-        .grid-investidor { grid-template-columns: 1fr 1.2fr; }
-
-        .saas-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); }
-        .saas-card-header { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
-        .saas-card-header h3 { font-family: var(--font-title); font-size: 1.3rem; color: var(--text-dark); }
-        .saas-card-header p { font-size: 0.9rem; color: var(--text-gray); margin-top: 5px; }
-
-        /* Formulário no Card */
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .form-label { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: block; }
+        .form-group { margin-bottom: 1rem; }
+        .form-label { font-size: 0.78rem; font-weight: 700; margin-bottom: 6px; display: block; text-transform: uppercase; color: var(--text-gray); }
         .form-control {
-            width: 100%; background: var(--bg-body); border: 1px solid var(--border-color);
-            border-radius: var(--radius-md); padding: 12px 16px; 
-            color: var(--text-dark); font-family: var(--font-body); transition: 0.3s;
+            width: 100%; background: var(--bg-input); border: 1.5px solid transparent;
+            border-radius: var(--radius-md); padding: 12px 14px; color: var(--text-dark); outline: none; font-weight: 600;
         }
-        .form-control:focus { background: var(--bg-input); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); outline: none; }
-        textarea.form-control { resize: vertical; min-height: 80px; }
-        select.form-control { cursor: pointer; }
+        .form-control:focus { border-color: var(--primary); background: var(--bg-card-solid); }
 
-        /* Lista de Clientes */
-        .list-container { max-height: 600px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px; }
-        
-        .client-row {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);
-            padding: 20px; transition: 0.3s; display: flex; flex-direction: column; gap: 12px;
-        }
-        .client-row:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-soft); background: var(--row-hover); }
-        .client-row.status-recebido { opacity: 0.6; filter: grayscale(30%); }
-        .client-row.status-recebido:hover { opacity: 1; filter: grayscale(0%); border-color: var(--border-color); }
-        
-        .row-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
-        .client-name { font-family: var(--font-title); font-size: 1.15rem; font-weight: 700; color: var(--text-dark); }
-        .client-meta { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px; font-size: 0.85rem; color: var(--text-gray); }
-        .client-meta i { color: var(--primary); margin-right: 4px; }
-        
-        .row-body { background: var(--bg-body); padding: 12px; border-radius: 8px; font-size: 0.9rem; color: var(--text-dark); }
-        
-        .row-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; padding-top: 15px; border-top: 1px dashed var(--border-color); flex-wrap: wrap; gap: 10px;}
-        .valor-causa { font-family: var(--font-title); font-size: 1.2rem; font-weight: 700; color: var(--text-dark); }
-        
-        /* Badges de Status Adaptativos */
-        .status-badge { padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-        .status-badge.pendente { background: rgba(255, 152, 0, 0.15); color: #F57C00; }
-        .status-badge.recebido { background: rgba(5, 205, 153, 0.15); color: #04A87D; }
-        [data-theme="dark"] .status-badge.pendente { color: #FFB74D; }
-        [data-theme="dark"] .status-badge.recebido { color: #6EE7B7; }
+        .switch-box { display: flex; align-items: center; justify-content: space-between; background: var(--bg-input); padding: 12px 14px; border-radius: var(--radius-md); }
+        .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #D1D1D6; transition: .3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--success); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        .action-select {
-            background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-dark);
-            padding: 8px 12px; border-radius: 8px; font-weight: 600;
-            cursor: pointer; outline: none; transition: 0.2s;
-        }
-        .action-select:focus { border-color: var(--primary); }
-        .action-select option { background: var(--bg-card); color: var(--text-dark); }
-
-        .financial-highlight {
-            background: rgba(5, 205, 153, 0.1); border: 1px solid rgba(5, 205, 153, 0.2);
-            border-radius: var(--radius-md); padding: 15px 20px; display: inline-flex; flex-direction: column; width: 100%;
-        }
-        .financial-highlight span { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--success); letter-spacing: 0.5px; }
-        .financial-highlight strong { font-family: var(--font-title); font-size: 1.5rem; color: var(--text-dark); margin-top: 2px; }
-
-        /* Notificações Toast */
-        #toast-container { position: fixed; bottom: 30px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast {
-            background: var(--bg-card); border-radius: var(--radius-md); padding: 16px 20px; box-shadow: var(--shadow-soft);
-            display: flex; align-items: center; gap: 15px; font-family: var(--font-body); font-weight: 500; font-size: 0.95rem; color: var(--text-dark);
-            transform: translateX(120%); animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            border-left: 5px solid var(--primary); border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
-        }
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--danger); }
-        .toast i { font-size: 1.4rem; }
-        .toast.success i { color: var(--success); }
-        .toast.error i { color: var(--danger); }
-        
-        @keyframes slideInRight { to { transform: translateX(0); } }
-        @keyframes fadeOutRight { to { opacity: 0; transform: translateX(120%); } }
-
-        /* =========================================================
-           RESPONSIVIDADE E ADAPTAÇÃO TOTAL (Mobile, Tablet, Desktop)
-           ========================================================= */
-        @media (max-width: 1024px) {
-            .grid-layout, .grid-investidor { grid-template-columns: 1fr; }
-            .form-wrapper { order: 2; }
-            .list-wrapper { order: 1; }
-            .topbar { padding: 0 20px; }
-            .dashboard-content { padding: 30px 20px; }
-        }
-        
-        @media (max-width: 768px) {
-            .welcome-banner { flex-direction: column; text-align: left; padding: 25px 20px; align-items: flex-start;}
-            .welcome-banner::after { display: none; }
-            .user-info span { display: none; } 
-            .user-info small { display: none; }
-            .topbar-logo { font-size: 1.2rem; }
-            .summary-cards { grid-template-columns: 1fr; gap: 15px; }
+        .btn-apple {
+            width: 100%; background: var(--primary); color: #FFF; border: none; padding: 14px;
+            border-radius: var(--radius-md); font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.28);
         }
 
-        @media (max-width: 480px) {
-            .dashboard-content { padding: 20px 15px; }
-            .saas-card { padding: 20px 15px; }
-            .client-row { padding: 15px; }
-            .row-footer { flex-direction: column; align-items: stretch; gap: 15px; }
-            .action-select { width: 100%; text-align: center; }
-            .client-meta { flex-direction: column; gap: 5px; }
+        .filter-bar { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 1rem; -webkit-overflow-scrolling: touch; }
+        .filter-bar::-webkit-scrollbar { display: none; }
+        .btn-filter {
+            background: var(--bg-input); border: none; padding: 6px 14px; border-radius: 20px;
+            font-size: 0.8rem !important; font-weight: 600; color: var(--text-gray); cursor: pointer; white-space: nowrap;
         }
+        .btn-filter.active { background: var(--text-dark); color: var(--bg-body); }
+
+        .process-card {
+            background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+            padding: 1.2rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 10px; position: relative;
+            box-shadow: var(--shadow-apple); word-break: break-word;
+        }
+        .process-card.is-favorite { border: 2px solid var(--gold); background: rgba(255, 204, 0, 0.03); }
+        .process-card.has-reminder { border-left: 5px solid var(--primary); }
+
+        .process-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .process-title { font-weight: 800; font-size: 1.05rem; }
+
+        .action-icons { display: flex; gap: 8px; align-items: center; }
+        .btn-star, .btn-edit { background: transparent; border: none; font-size: 1.1rem; cursor: pointer; color: var(--text-gray); }
+        .btn-star.active { color: var(--gold); }
+
+        .badge { padding: 4px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-type { background: var(--bg-input); color: var(--text-dark); }
+        .badge-partner { background: rgba(52, 199, 89, 0.15); color: var(--success); }
+
+        .draft-box {
+            background: rgba(255, 149, 0, 0.1); border-left: 3px solid var(--warning); padding: 8px 12px;
+            border-radius: 8px; font-size: 0.82rem; color: var(--text-dark); font-weight: 500;
+        }
+
+        .btn-done { background: rgba(52, 199, 89, 0.15); color: var(--success); border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        .kpi-container { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        @media(min-width: 600px) { .kpi-container { grid-template-columns: 1fr 1fr; } }
+        .kpi-card { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.2rem; box-shadow: var(--shadow-apple); }
+        .kpi-card span { font-size: 0.75rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
+        .kpi-card h2 { font-size: 1.5rem; font-weight: 800; margin-top: 4px; color: var(--text-dark); }
+
+        .history-box { background: var(--bg-input); border-radius: 10px; padding: 10px 12px; font-size: 0.82rem; margin-top: 8px; }
+        .history-title { font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
+        .history-item { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed var(--border-color); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem;
+        }
+        .modal-card {
+            background: var(--bg-card-solid); border-radius: var(--radius-xl); padding: 1.5rem;
+            width: 100%; max-width: 440px; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+
+        .notifications-drawer {
+            position: absolute; top: 65px; right: 1rem; width: calc(100vw - 2rem); max-width: 320px;
+            background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+            padding: 1rem; box-shadow: var(--shadow-apple); display: none; z-index: 200;
+        }
+
+        .loading-status { font-size: 0.8rem; color: var(--primary); font-weight: 600; text-align: center; margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
-    <div id="toast-container"></div>
-
-    <!-- TELA DA ADVOGADA -->
-    <div id="advogado-view" class="view-container active">
+    <div class="app-container">
         <header class="topbar">
-            <div class="topbar-logo"><i class="fa-solid fa-scale-balanced"></i> F.Mendes</div>
-            <div class="user-controls">
-                <button class="btn-theme" onclick="toggleTheme()" title="Alternar Tema Escuro/Claro"><i class="fa-solid fa-moon"></i></button>
-                <div class="user-profile">
-                    <div class="user-info">
-                        <span>Dra. Fernanda Mendes</span>
-                        <small>Gestão Central</small>
-                    </div>
-                    <div class="avatar">F</div>
-                </div>
+            <div class="brand">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span>Dra. Fernanda</span>
+            </div>
+            <div class="top-actions">
+                <button type="button" class="btn-icon" onclick="buscarDadosDaPlanilha()"><i class="fa-solid fa-rotate"></i></button>
+                <button type="button" class="btn-icon" onclick="toggleNotificacoes()"><i class="fa-solid fa-bell"></i><div class="notification-badge" id="notif-badge"></div></button>
+                <button type="button" class="btn-icon" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
             </div>
         </header>
 
-        <div class="dashboard-content">
-            <div class="welcome-banner">
-                <div class="welcome-text">
-                    <h2>Visão Geral do Escritório</h2>
-                    <p>Gerencie processos, delegue associados e atualize os status na nuvem.</p>
-                </div>
+        <div class="notifications-drawer" id="drawer-notificacoes">
+            <h4 style="font-size:0.95rem; margin-bottom:8px;">🔔 Lembretes do Dia</h4>
+            <div id="lista-notificacoes-conteudo" style="font-size:0.82rem; color:var(--text-gray);">
+                Nenhum lembrete para hoje.
             </div>
+        </div>
 
-            <div class="grid-layout">
-                <div class="saas-card form-wrapper">
-                    <div class="saas-card-header">
-                        <h3>Cadastrar Processo</h3>
-                        <p>Os dados serão inseridos diretamente no banco de dados.</p>
-                    </div>
+        <nav class="nav-tabs">
+            <button type="button" class="tab-btn active" onclick="switchTab('aba-processos', this)"><i class="fa-solid fa-folder"></i> Processos</button>
+            <button type="button" class="tab-btn" onclick="switchTab('aba-finalizados', this)"><i class="fa-solid fa-circle-check"></i> Finalizados</button>
+            <button type="button" class="tab-btn" onclick="switchTab('aba-investidor', this)"><i class="fa-solid fa-handshake"></i> Investidores</button>
+            <button type="button" class="tab-btn" onclick="switchTab('aba-financeiro', this)"><i class="fa-solid fa-wallet"></i> Financeiro</button>
+            <button type="button" class="tab-btn" onclick="switchTab('aba-config', this)"><i class="fa-solid fa-gear"></i> Configurações</button>
+        </nav>
+
+        <main class="main-content">
+
+            <!-- 1. ABA DE PROCESSOS -->
+            <div id="aba-processos" class="tab-content active">
+                <div class="grid-layout">
                     
-                    <div class="form-grid">
-                        <div><label class="form-label">Nome do Cliente</label><input type="text" class="form-control" id="adv-nome" placeholder="Nome completo"></div>
-                        <div><label class="form-label">Síntese do Processo</label><textarea class="form-control" id="adv-desc" placeholder="Detalhes da ação..."></textarea></div>
-                        <div>
-                            <label class="form-label">Parceiro / Investidor</label>
-                            <select class="form-control" id="adv-investidor">
-                                <option value="junior">Júnior (Rentabilidade 50% Fixa)</option>
-                            </select>
+                    <!-- FORMULÁRIO DE CADASTRO: APARECE APENAS NO COMPUTADOR -->
+                    <div class="apple-card-form form-cadastro-container">
+                        <h3 class="form-title">Cadastrar Processo</h3>
+                        <form id="form-processo" onsubmit="salvarProcesso(event)">
+                            <div class="form-group">
+                                <label class="form-label">Nome do Cliente</label>
+                                <input type="text" id="proc-cliente" class="form-control" placeholder="Ex: Lucas Barbosa" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Área / Tipo</label>
+                                <select id="proc-tipo" class="form-control" required>
+                                    <option value="Trabalhista">Trabalhista</option>
+                                    <option value="Cível">Cível</option>
+                                    <option value="Família">Família</option>
+                                    <option value="Previdenciário">Previdenciário</option>
+                                    <option value="Tributário">Tributário</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Valor Total da Causa (R$)</label>
+                                <input type="number" id="proc-valor" step="0.01" class="form-control" placeholder="0.00" required inputmode="decimal">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Sócio / Investidor</label>
+                                <div class="switch-box">
+                                    <span style="font-weight: 600; font-size: 0.9rem;">Sócio Júnior (50%)</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="proc-investidor-toggle">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Síntese da Causa</label>
+                                <textarea id="proc-desc" class="form-control" rows="3" placeholder="Resumo e detalhes..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-apple" id="btn-submit-proc"><i class="fa-solid fa-plus"></i> Registrar Processo</button>
+                        </form>
+                    </div>
+
+                    <!-- LISTAGEM DE PROCESSOS: APARECE EM AMBOS (CELULAR E COMPUTADOR) -->
+                    <div>
+                        <div class="loading-status" id="status-sincronizacao">Carregando da nuvem...</div>
+                        <div class="filter-bar">
+                            <button type="button" class="btn-filter active" onclick="filtrarProcessos('Todos', this)">Todos</button>
+                            <button type="button" class="btn-filter" onclick="filtrarProcessos('Favoritos', this)">⭐ Favoritos</button>
+                            <button type="button" class="btn-filter" onclick="filtrarProcessos('Trabalhista', this)">Trabalhista</button>
+                            <button type="button" class="btn-filter" onclick="filtrarProcessos('Cível', this)">Cível</button>
+                            <button type="button" class="btn-filter" onclick="filtrarProcessos('Família', this)">Família</button>
+                            <button type="button" class="btn-filter" onclick="filtrarProcessos('Previdenciário', this)">Previdenciário</button>
+                            <button type="button" class="btn-filter" onclick="filtrarProcessos('Tributário', this)">Tributário</button>
                         </div>
-                        <div><label class="form-label">Valor Total da Causa (R$)</label><input type="number" class="form-control" id="adv-valor" step="0.01" placeholder="0.00"></div>
-                        
-                        <button class="btn-corporate" id="btn-enviar-form" onclick="enviarParaGoogleFormsOculto()" style="margin-top: 10px;">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Registrar na Nuvem
-                        </button>
+
+                        <div id="lista-processos"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ABA DE FINALIZADOS -->
+            <div id="aba-finalizados" class="tab-content">
+                <div class="apple-card-form">
+                    <h3 class="form-title">Processos Finalizados / Documentados</h3>
+                    <div id="lista-finalizados"></div>
+                </div>
+            </div>
+
+            <!-- 3. ABA DO INVESTIDOR -->
+            <div id="aba-investidor" class="tab-content">
+                <div class="apple-card-form">
+                    <h3 class="form-title">Participação do Investidor / Sócio</h3>
+                    <div id="lista-investidor"></div>
+                </div>
+            </div>
+
+            <!-- 4. ABA FINANCEIRA -->
+            <div id="aba-financeiro" class="tab-content">
+                <div class="kpi-container">
+                    <div class="kpi-card">
+                        <span>Faturamento Bruto</span>
+                        <h2 id="kpi-faturamento">R$ 0,00</h2>
+                    </div>
+                    <div class="kpi-card">
+                        <span>Lucro Dra. Fernanda</span>
+                        <h2 id="kpi-lucro" style="color:var(--success);">R$ 0,00</h2>
                     </div>
                 </div>
 
-                <div class="saas-card list-wrapper">
-                    <div class="saas-card-header">
-                        <h3>Processos em Andamento</h3>
-                        <p>Ordenados por status.</p>
-                    </div>
-                    <div class="list-container" id="lista-advogada">
-                        <!-- Conteúdo injetado pelo JS -->
-                    </div>
+                <div class="apple-card-form">
+                    <h3 class="form-title">Gestão Financeira (Ativos)</h3>
+                    <div id="lista-financeiro"></div>
                 </div>
+            </div>
+
+            <!-- 5. CONFIGURAÇÕES -->
+            <div id="aba-config" class="tab-content">
+                <div class="apple-card-form" style="max-width: 600px; margin: 0 auto;">
+                    <h3 class="form-title">Conexão da Planilha</h3>
+                    <form onsubmit="salvarConfiguracoes(event)">
+                        <div class="form-group">
+                            <label class="form-label">Link/ID da Planilha Google Sheets</label>
+                            <input type="text" id="cfg-sheet-url" class="form-control" placeholder="Cole a URL da Planilha" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">URL do Google Apps Script (/exec)</label>
+                            <input type="text" id="cfg-script-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" required>
+                        </div>
+                        <button type="submit" class="btn-apple">Salvar Conexões</button>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL CONFIRMAÇÃO & LEMBRETE -->
+    <div class="modal-overlay" id="modal-lembrete">
+        <div class="modal-card">
+            <h3 style="color:var(--success); margin-bottom:5px;"><i class="fa-solid fa-circle-check"></i> Cliente Cadastrado!</h3>
+            <p id="modal-texto-info" style="font-size:0.95rem; line-height:1.4; margin-bottom:1.5rem;"></p>
+            
+            <div id="box-botao-criar-lembrete">
+                <button type="button" class="btn-apple" style="background:var(--bg-input); color:var(--text-dark); box-shadow:none; margin-bottom:10px;" onclick="ativarFormularioLembreteModal()">⏰ Criar Lembrete</button>
+            </div>
+
+            <div id="campos-lembrete-box" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Data do Lembrete</label>
+                    <input type="date" id="modal-data-lembrete" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Anotação / Rascunho</label>
+                    <textarea id="modal-nota-lembrete" class="form-control" rows="2" placeholder="Ex: Buscar RG ou certidão..."></textarea>
+                </div>
+            </div>
+
+            <input type="hidden" id="modal-processo-id">
+
+            <div style="display: flex; gap: 10px; margin-top: 1rem;">
+                <button type="button" class="btn-apple" id="btn-modal-concluir" style="background: var(--bg-input); color: var(--text-dark); box-shadow:none;" onclick="fecharModal()">Concluir</button>
+                <button type="button" class="btn-apple" id="btn-modal-confirmar" style="display:none;" onclick="salvarLembreteModal()">Confirmar Lembrete</button>
             </div>
         </div>
     </div>
 
-    <!-- TELA DO INVESTIDOR (MANTIDA NO CÓDIGO MAS INACESSÍVEL POR PADRÃO) -->
-    <div id="investidor-view" class="view-container">
-        <header class="topbar">
-            <div class="topbar-logo"><i class="fa-solid fa-chart-line"></i> Portal do <span>Investidor</span></div>
-            <div class="user-controls">
-                <button class="btn-theme" onclick="toggleTheme()" title="Alternar Tema Escuro/Claro"><i class="fa-solid fa-moon"></i></button>
-                <div class="user-profile">
-                    <div class="user-info">
-                        <span id="inv-titulo">Olá, Júnior</span>
-                        <small>Acompanhamento</small>
-                    </div>
-                    <div class="avatar" style="background:var(--success);">J</div>
-                </div>
+    <!-- MODAL EDIÇÃO COMPLETA DO PROCESSO -->
+    <div class="modal-overlay" id="modal-editar">
+        <div class="modal-card">
+            <h3 style="margin-bottom:1rem;">✏️ Editar Processo</h3>
+            <input type="hidden" id="edit-id">
+            
+            <div class="form-group">
+                <label class="form-label">Nome do Cliente</label>
+                <input type="text" id="edit-cliente" class="form-control" required>
             </div>
-        </header>
-
-        <div class="dashboard-content">
-            <div class="welcome-banner" style="background: linear-gradient(135deg, #05CD99 0%, #038A66 100%);">
-                <div class="welcome-text">
-                    <h2>Análise de Rentabilidade Fixa (50%)</h2>
-                    <p>Acompanhe os lucros líquidos das suas causas de forma transparente e precisa.</p>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Síntese / Causa</label>
+                <textarea id="edit-desc" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Valor Total (R$)</label>
+                <input type="number" step="0.01" id="edit-valor" class="form-control" required inputmode="decimal">
             </div>
 
-            <!-- NOVOS CARDS DE RESUMO FINANCEIRO -->
-            <div class="summary-cards">
-                <div class="summary-card pendente">
-                    <div class="summary-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <div class="summary-info">
-                        <span>A Receber (Pendente)</span>
-                        <h3 id="inv-total-pendente">R$ 0,00</h3>
-                    </div>
-                </div>
-                <div class="summary-card recebido">
-                    <div class="summary-icon"><i class="fa-solid fa-check-double"></i></div>
-                    <div class="summary-info">
-                        <span>Já Recebido (Concluído)</span>
-                        <h3 id="inv-total-recebido">R$ 0,00</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid-layout grid-investidor">
-                <div class="saas-card">
-                    <div class="saas-card-header">
-                        <h3>Contratos Associados</h3>
-                        <p>Histórico de operações ativas.</p>
-                    </div>
-                    <div class="list-container" id="lista-investidor">
-                        <!-- Conteúdo injetado pelo JS -->
-                    </div>
-                </div>
-
-                <div class="saas-card">
-                    <div class="saas-card-header">
-                        <h3>Projeção de Receita (Mensal)</h3>
-                        <p>Visão gráfica baseada na rentabilidade de 50% sobre os processos.</p>
-                    </div>
-                    <div style="width: 100%; height: 380px; margin-top: 20px; position: relative;">
-                        <canvas id="chartLucros"></canvas>
-                    </div>
-                </div>
+            <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+                <button type="button" class="btn-apple" style="background: var(--bg-input); color: var(--text-dark); box-shadow:none;" onclick="fecharModalEditar()">Cancelar</button>
+                <button type="button" class="btn-apple" onclick="salvarEdicaoProcesso()">Salvar Alterações</button>
             </div>
         </div>
     </div>
 
-    <!-- LÓGICA DO SISTEMA -->
     <script>
-        // --- 1. VARIÁVEIS GLOBAIS E INICIALIZAÇÃO ---
-        const SHEET_ID = '1WMUKbr-gNUDIql29huUskmSinfQfAC_5ZPU4lVnHWPU';
-        const URL_ADVOGADA = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=advogada`;
-        const FORM_POST_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdiOe4Vbi8Lc852CU8sdjLZhtYk2T5yhynMXCBUfguziKZPRQ/formResponse";
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzux8DtRoK-qMbE-xrY38KYoRNASNYZVXCFpsbYtMpBRmDENUH0CJpnR3YvAlO3qzsY/exec";
+        let db = [];
+        let filtroAtual = 'Todos';
 
-        let dbClientes = [];
-        let usuarioLogado = 'fernanda'; // Definido como Fernanda por padrão (Acesso Direto)
-        let meuGrafico = null;
-
-        // Iniciar aplicação automaticamente ao carregar a página
-        window.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            sincronizarGoogleSheets();
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarConfiguracoes();
+            buscarDadosDaPlanilha();
         });
 
-        // --- 2. LÓGICA DO DARK MODE / TEMA ---
-        function initTheme() {
-            const savedTheme = localStorage.getItem('fm_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon();
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+            
+            buscarDadosDaPlanilha();
         }
 
         function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('fm_theme', newTheme);
-            updateThemeIcon();
-
-            if(meuGrafico) {
-                const isDark = newTheme === 'dark';
-                meuGrafico.options.scales.y.ticks.color = isDark ? '#94A3B8' : '#A3AED0';
-                meuGrafico.options.scales.x.ticks.color = isDark ? '#94A3B8' : '#A3AED0';
-                meuGrafico.update();
-            }
+            const current = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
         }
 
-        function updateThemeIcon() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            document.querySelectorAll('.btn-theme').forEach(btn => {
-                btn.innerHTML = isDark ? '<i class="fa-solid fa-sun" style="color:#FFB74D;"></i>' : '<i class="fa-solid fa-moon"></i>';
-            });
+        function toggleNotificacoes() {
+            const drawer = document.getElementById('drawer-notificacoes');
+            drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
         }
 
-        // --- 3. UTILITÁRIOS E PARSERS ---
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const icon = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>';
-            toast.innerHTML = `${icon} <span>${message}</span>`;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'fadeOutRight 0.4s forwards';
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        }
-
-        function parseCSVLine(text) {
-            let p = '', row = [''], i = 0, r = 0, s = !0, l;
-            for (l of text) {
-                if ('"' === l) { if (s && l === p) row[i] += l; s = !s; } 
-                else if (',' === l && s) l = row[++i] = ''; 
-                else row[i] += l; 
-                p = l;
-            }
-            return row;
-        }
-
-        function parseDataReal(dataStr) {
-            if (!dataStr) return new Date();
-            if (dataStr.includes('-')) {
+        function formatarDataBR(dataStr) {
+            if(!dataStr) return '';
+            if(dataStr.includes('T')) dataStr = dataStr.split('T')[0];
+            if(dataStr.includes('-')) {
                 const p = dataStr.split('-');
-                return new Date(p[0], p[1] - 1, p[2]); 
+                if(p.length === 3) return `${p[2]}/${p[1]}/${p[0]}`;
             }
-            if (dataStr.includes('/')) {
-                const p = dataStr.split('/');
-                return new Date(p[2], p[1] - 1, p[0]);
-            }
-            return new Date(dataStr);
+            return dataStr;
         }
 
-        function formatarMoeda(valor) {
-            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        async function buscarDadosDaPlanilha() {
+            const scriptUrl = localStorage.getItem('fm_script_url');
+            const statusEl = document.getElementById('status-sincronizacao');
+            
+            if (!scriptUrl) {
+                if(statusEl) statusEl.innerText = "Informe a URL do Apps Script em Configurações.";
+                return;
+            }
+
+            if(statusEl) statusEl.innerText = "Sincronizando com a planilha...";
+
+            try {
+                const urlSemCache = scriptUrl + (scriptUrl.includes('?') ? '&' : '?') + 'nocache=' + new Date().getTime();
+                const resposta = await fetch(urlSemCache, { method: 'GET', redirect: 'follow' });
+                const dadosPlanilha = await resposta.json();
+
+                if (Array.isArray(dadosPlanilha)) {
+                    db = dadosPlanilha.map(item => ({
+                        id: item.id || Date.now(),
+                        data: item.data || new Date().toISOString(),
+                        cliente: item.cliente || "Sem nome",
+                        tipo: item.tipo || 'Cível',
+                        desc: item.desc || '',
+                        valor: parseFloat(item.valor) || 0,
+                        investidor: (item.investidor && item.investidor.toString().toLowerCase().includes('junior')) ? 'Júnior' : 'Nenhum',
+                        favorito: (item.favorito === true || item.favorito === "SIM"),
+                        finalizado: (item.finalizado === true || item.finalizado === "SIM"),
+                        rascunho: item.rascunho || '',
+                        lembreteData: item.lembreteData || '',
+                        pago: parseFloat(item.pago) || 0,
+                        historicoPagamentos: Array.isArray(item.historicoPagamentos) ? item.historicoPagamentos : []
+                    }));
+
+                    if(statusEl) statusEl.innerText = "✓ Conectado e sincronizado.";
+                    renderTudo();
+                }
+            } catch (erro) {
+                console.error("Erro ao sincronizar planilha:", erro);
+                if(statusEl) statusEl.innerText = "Falha ao conectar com a planilha.";
+            }
         }
 
-        function ordenarCasosPrioridade(casos) {
-            return [...casos].sort((a, b) => {
-                const statusA = a.status.toLowerCase().trim() === 'pendente' ? 0 : 1;
-                const statusB = b.status.toLowerCase().trim() === 'pendente' ? 0 : 1;
-                return statusA - statusB;
+        async function salvarProcesso(e) {
+            e.preventDefault();
+            const investidorAtivo = document.getElementById('proc-investidor-toggle').checked;
+            const scriptUrl = localStorage.getItem('fm_script_url');
+            const btnSubmit = document.getElementById('btn-submit-proc');
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando...';
+
+            const novo = {
+                cliente: document.getElementById('proc-cliente').value.trim(),
+                tipo: document.getElementById('proc-tipo').value,
+                desc: document.getElementById('proc-desc').value.trim(),
+                valor: parseFloat(document.getElementById('proc-valor').value) || 0,
+                investidor: investidorAtivo ? 'junior' : 'nenhum'
+            };
+
+            if (scriptUrl) {
+                try {
+                    await fetch(scriptUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(novo)
+                    });
+                } catch (err) { console.error("Erro ao enviar:", err); }
+            }
+
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-plus"></i> Registrar Processo';
+
+            abrirModalLembrete(novo.cliente, novo.desc);
+            document.getElementById('form-processo').reset();
+            
+            setTimeout(buscarDadosDaPlanilha, 1200);
+        }
+
+        function abrirModalLembrete(cliente, causa) {
+            document.getElementById('modal-processo-id').value = cliente;
+            document.getElementById('modal-texto-info').innerHTML = `Sr(a) <strong>${cliente.toUpperCase()}</strong> -> Causa: <em>${causa}</em>`;
+            
+            document.getElementById('box-botao-criar-lembrete').style.display = 'block';
+            document.getElementById('campos-lembrete-box').style.display = 'none';
+            document.getElementById('btn-modal-concluir').style.display = 'block';
+            document.getElementById('btn-modal-confirmar').style.display = 'none';
+
+            document.getElementById('modal-lembrete').style.display = 'flex';
+        }
+
+        function ativarFormularioLembreteModal() {
+            document.getElementById('box-botao-criar-lembrete').style.display = 'none';
+            document.getElementById('campos-lembrete-box').style.display = 'block';
+            document.getElementById('btn-modal-concluir').style.display = 'none';
+            document.getElementById('btn-modal-confirmar').style.display = 'block';
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-lembrete').style.display = 'none';
+            buscarDadosDaPlanilha();
+        }
+
+        async function salvarLembreteModal() {
+            const nomeCliente = document.getElementById('modal-processo-id').value;
+            const scriptUrl = localStorage.getItem('fm_script_url');
+
+            const lembreteData = document.getElementById('modal-data-lembrete').value;
+            const rascunho = document.getElementById('modal-nota-lembrete').value.trim();
+
+            if(scriptUrl && nomeCliente) {
+                try {
+                    await fetch(scriptUrl, {
+                        method: 'POST', mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            acao: 'salvarLembrete',
+                            nome: nomeCliente,
+                            lembreteData: lembreteData,
+                            rascunho: rascunho
+                        })
+                    });
+                } catch(e) { console.error(e); }
+            }
+            fecharModal();
+        }
+
+        async function processarNovoPagamento(id, inputElement) {
+            const valorInformado = parseFloat(inputElement.value);
+            if (!valorInformado || valorInformado <= 0) return;
+
+            const item = db.find(x => x.id === id);
+            if (!item) return;
+
+            if (!item.historicoPagamentos) item.historicoPagamentos = [];
+
+            const dataHoje = new Date().toLocaleDateString('pt-BR');
+            const novoTotalPago = (item.pago || 0) + valorInformado;
+            
+            item.historicoPagamentos.push({
+                data: dataHoje,
+                valor: valorInformado
+            });
+
+            let estaFinalizado = item.finalizado;
+            if (novoTotalPago >= item.valor) {
+                if (confirm(`O cliente ${item.cliente} quitou o valor total! Deseja mover para a aba Finalizados?`)) {
+                    estaFinalizado = true;
+                }
+            }
+
+            inputElement.value = '';
+
+            const scriptUrl = localStorage.getItem('fm_script_url');
+            if (scriptUrl) {
+                try {
+                    await fetch(scriptUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            acao: 'atualizarPagamento',
+                            nome: item.cliente,
+                            pagoTotal: novoTotalPago,
+                            historicoJson: JSON.stringify(item.historicoPagamentos),
+                            finalizado: estaFinalizado
+                        })
+                    });
+                } catch (err) { console.error(err); }
+            }
+
+            setTimeout(buscarDadosDaPlanilha, 1200);
+        }
+
+        function abrirModalEditar(id) {
+            const item = db.find(x => x.id === id);
+            if(!item) return;
+
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('edit-cliente').value = item.cliente;
+            document.getElementById('edit-desc').value = item.desc;
+            document.getElementById('edit-valor').value = item.valor;
+
+            document.getElementById('modal-editar').style.display = 'flex';
+        }
+
+        function fecharModalEditar() {
+            document.getElementById('modal-editar').style.display = 'none';
+        }
+
+        async function salvarEdicaoProcesso() {
+            const id = parseInt(document.getElementById('edit-id').value);
+            const item = db.find(x => x.id === id);
+
+            if(item) {
+                const nomeAntigo = item.cliente;
+                const clienteNovo = document.getElementById('edit-cliente').value.trim();
+                const descNova = document.getElementById('edit-desc').value.trim();
+                const valorNovo = parseFloat(document.getElementById('edit-valor').value) || 0;
+
+                const scriptUrl = localStorage.getItem('fm_script_url');
+                if (scriptUrl) {
+                    try {
+                        await fetch(scriptUrl, {
+                            method: 'POST', mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                acao: 'editarProcesso',
+                                nome: nomeAntigo,
+                                nomeNovo: clienteNovo,
+                                desc: descNova,
+                                valor: valorNovo
+                            })
+                        });
+                    } catch(e) { console.error(e); }
+                }
+            }
+            fecharModalEditar();
+            setTimeout(buscarDadosDaPlanilha, 1200);
+        }
+
+        async function finalizarProcesso(id) {
+            const item = db.find(x => x.id === id);
+            if(item) {
+                const scriptUrl = localStorage.getItem('fm_script_url');
+                if (scriptUrl) {
+                    try {
+                        await fetch(scriptUrl, {
+                            method: 'POST', mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                acao: 'finalizarProcesso',
+                                nome: item.cliente
+                            })
+                        });
+                    } catch(e) { console.error(e); }
+                }
+                setTimeout(buscarDadosDaPlanilha, 1200);
+            }
+        }
+
+        async function toggleFavorito(id) {
+            const item = db.find(x => x.id === id);
+            if(item) {
+                const novoEstado = !item.favorito;
+                item.favorito = novoEstado;
+                renderProcessos();
+
+                const scriptUrl = localStorage.getItem('fm_script_url');
+                if (scriptUrl) {
+                    try {
+                        await fetch(scriptUrl, {
+                            method: 'POST', mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                acao: 'toggleFavorito',
+                                nome: item.cliente,
+                                favorito: novoEstado
+                            })
+                        });
+                    } catch(e) { console.error(e); }
+                }
+            }
+        }
+
+        function filtrarProcessos(categoria, btn) {
+            filtroAtual = categoria;
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProcessos();
+        }
+
+        function salvarConfiguracoes(e) {
+            e.preventDefault();
+            localStorage.setItem('fm_sheet_url', document.getElementById('cfg-sheet-url').value.trim());
+            localStorage.setItem('fm_script_url', document.getElementById('cfg-script-url').value.trim());
+            alert('Conexões salvas!');
+            buscarDadosDaPlanilha();
+        }
+
+        function carregarConfiguracoes() {
+            document.getElementById('cfg-sheet-url').value = localStorage.getItem('fm_sheet_url') || '';
+            document.getElementById('cfg-script-url').value = localStorage.getItem('fm_script_url') || '';
+        }
+
+        function formatarMoeda(val) {
+            return (parseFloat(val) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function renderTudo() {
+            renderProcessos();
+            renderFinalizados();
+            renderInvestidor();
+            renderFinanceiro();
+            checarNotificacoes();
+        }
+
+        function checarNotificacoes() {
+            const hoje = new Date().toISOString().split('T')[0];
+            const notificacoes = db.filter(x => x.lembreteData && x.lembreteData === hoje);
+            
+            const badge = document.getElementById('notif-badge');
+            const drawerConteudo = document.getElementById('lista-notificacoes-conteudo');
+
+            if(notificacoes.length > 0) {
+                badge.style.display = 'block';
+                drawerConteudo.innerHTML = '';
+                notificacoes.forEach(n => {
+                    drawerConteudo.innerHTML += `<div style="margin-bottom:8px;"><strong>${n.cliente}:</strong> ${n.rascunho || 'Lembrete agendado para hoje!'}</div>`;
+                });
+            } else {
+                badge.style.display = 'none';
+                drawerConteudo.innerHTML = 'Nenhum lembrete para hoje.';
+            }
+        }
+
+        function renderProcessos() {
+            const container = document.getElementById('lista-processos');
+            container.innerHTML = '';
+
+            let ativos = db.filter(x => !x.finalizado);
+
+            ativos.sort((a, b) => {
+                if (a.lembreteData && !b.lembreteData) return -1;
+                if (!a.lembreteData && b.lembreteData) return 1;
+                if (a.favorito && !b.favorito) return -1;
+                if (!a.favorito && b.favorito) return 1;
+                return 0;
+            });
+
+            if(filtroAtual === 'Favoritos') ativos = ativos.filter(x => x.favorito);
+            else if(filtroAtual !== 'Todos') ativos = ativos.filter(x => x.tipo === filtroAtual);
+
+            if(ativos.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-gray); text-align:center; padding: 2rem;">Nenhum processo ativo no momento.</p>';
+                return;
+            }
+
+            ativos.forEach(p => {
+                container.innerHTML += `
+                    <div class="process-card ${p.favorito ? 'is-favorite' : ''} ${p.lembreteData ? 'has-reminder' : ''}">
+                        <div class="process-header">
+                            <div>
+                                <span class="process-title">${p.cliente}</span>
+                                <div style="margin-top: 4px; display:flex; gap:6px;">
+                                    <span class="badge badge-type">${p.tipo}</span>
+                                    ${p.investidor !== 'Nenhum' ? `<span class="badge badge-partner">Sócio: ${p.investidor}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="action-icons">
+                                <button type="button" class="btn-star ${p.favorito ? 'active' : ''}" onclick="toggleFavorito(${p.id})">★</button>
+                                <button type="button" class="btn-edit" onclick="abrirModalEditar(${p.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </div>
+                        </div>
+                        <p style="font-size:0.9rem; color:var(--text-gray);">${p.desc || 'Sem causa detalhada.'}</p>
+                        
+                        ${p.rascunho ? `<div class="draft-box"><strong>📌 Lembrete (${formatarDataBR(p.lembreteData)}):</strong>${p.rascunho}</div>` : ''}
+                        
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 8px;">
+                            <strong>Valor Causa: ${formatarMoeda(p.valor)}</strong>
+                            <button type="button" class="btn-done" onclick="finalizarProcesso(${p.id})">✅ Finalizar</button>
+                        </div>
+                    </div>
+                `;
             });
         }
 
-        // --- 4. COMUNICAÇÃO COM O SERVIDOR (NUVEM) ---
-        async function sincronizarGoogleSheets() {
-            try {
-                const resAdv = await fetch(URL_ADVOGADA);
-                const textAdv = await resAdv.text();
-                const linhasAdv = textAdv.split('\n');
-                
-                let novosClientes = [];
-                for(let i = 1; i < linhasAdv.length; i++) {
-                    const colunas = parseCSVLine(linhasAdv[i]);
-                    if(colunas.length >= 7 && colunas[1].trim() !== '') {
-                        let statusPlanilha = colunas[7] ? colunas[7].replace(/"/g, '').trim() : 'Pendente';
-                        if(statusPlanilha === '') statusPlanilha = 'Pendente';
+        function renderFinalizados() {
+            const container = document.getElementById('lista-finalizados');
+            container.innerHTML = '';
+            const finalizados = db.filter(x => x.finalizado);
 
-                        novosClientes.push({
-                            id: i,
-                            nome: colunas[1].replace(/"/g, '').trim(),
-                            data: colunas[3] ? colunas[3].replace(/"/g, '').trim() : '', 
-                            desc: colunas[4] ? colunas[4].replace(/"/g, '').trim() : '',
-                            inv: colunas[5] ? colunas[5].replace(/"/g, '').toLowerCase().trim() : 'junior',
-                            valor: parseFloat(colunas[6].replace(/"/g, '').replace(',','.')) || 0,
-                            status: statusPlanilha
-                        });
-                    }
+            if(finalizados.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-gray);">Nenhum processo finalizado ainda.</p>';
+                return;
+            }
+
+            finalizados.forEach(p => {
+                let historicoHtml = '';
+                if (p.historicoPagamentos && p.historicoPagamentos.length > 0) {
+                    historicoHtml = `
+                        <div class="history-box" style="margin-top:10px;">
+                            <div class="history-title">📄 Dossiê do Pagamento (Documentado):</div>
+                            ${p.historicoPagamentos.map(h => `
+                                <div class="history-item">
+                                    <span>Pagamento em ${h.data}</span>
+                                    <strong>+ ${formatarMoeda(h.valor)}</strong>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
                 }
-                dbClientes = novosClientes;
 
-                if(usuarioLogado === 'fernanda') renderAdvogada();
-                else if(usuarioLogado === 'junior') renderInvestidor();
-            } catch (error) {
-                showToast("Erro ao conectar ao banco de dados.", "error");
-            }
-        }
-
-        async function enviarParaGoogleFormsOculto() {
-            const nome = document.getElementById('adv-nome').value.trim();
-            const desc = document.getElementById('adv-desc').value.trim();
-            const inv = document.getElementById('adv-investidor').value.trim();
-            const valor = document.getElementById('adv-valor').value.trim();
-
-            if(!nome || !valor) {
-                showToast("Preencha Nome e Valor.", "error");
-                return;
-            }
-
-            const btn = document.getElementById('btn-enviar-form');
-            const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-
-            const formData = new URLSearchParams();
-            formData.append("entry.1644216679", nome);
-            formData.append("entry.1034218931", desc);
-            formData.append("entry.146227971", inv);
-            formData.append("entry.1540368822", valor);
-
-            try {
-                await fetch(FORM_POST_URL, { method: 'POST', mode: 'no-cors', body: formData });
-
-                ['adv-nome', 'adv-desc', 'adv-valor'].forEach(id => document.getElementById(id).value = '');
-
-                setTimeout(async () => {
-                    await sincronizarGoogleSheets();
-                    showToast("Processo cadastrado na nuvem!");
-                    btn.innerHTML = textoOriginal;
-                    btn.disabled = false;
-                    btn.style.opacity = '1';
-                }, 1500);
-            } catch (error) {
-                showToast("Falha na comunicação com o Google.", "error");
-                btn.innerHTML = textoOriginal;
-                btn.disabled = false;
-                btn.style.opacity = '1';
-            }
-        }
-
-        async function mudarStatusPlanilha(nomeCliente, novoStatus, selectElement) {
-            selectElement.disabled = true;
-            const containerRow = selectElement.closest('.client-row');
-            containerRow.style.opacity = '0.5';
-            
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST', mode: 'no-cors',
-                    body: JSON.stringify({ nome: nomeCliente, status: novoStatus })
-                });
-
-                showToast(`Status alterado para: ${novoStatus}`);
-                
-                setTimeout(async () => {
-                    await sincronizarGoogleSheets();
-                }, 1500);
-
-            } catch (error) {
-                showToast("Erro ao sincronizar status.", "error");
-                selectElement.disabled = false;
-                containerRow.style.opacity = '1';
-            }
-        }
-
-        // --- 5. RENDERIZAÇÃO DAS TELAS ---
-        function renderAdvogada() {
-            const div = document.getElementById('lista-advogada');
-            div.innerHTML = '';
-            
-            if(dbClientes.length === 0) {
-                div.innerHTML = `
-                    <div style="text-align:center; padding:50px 20px; color:var(--text-gray);">
-                        <i class="fa-regular fa-folder-open" style="font-size:3rem; margin-bottom:15px; opacity:0.6;"></i>
-                        <p style="font-family:var(--font-title); font-size:1.1rem;">Nenhum processo localizado.</p>
-                    </div>`;
-                return;
-            }
-
-            const ordenados = ordenarCasosPrioridade(dbClientes);
-
-            ordenados.forEach(c => {
-                const isRecebido = c.status.toLowerCase() === 'recebido';
-                const badgeClass = isRecebido ? 'recebido' : 'pendente';
-                const cardClass = isRecebido ? 'status-recebido' : '';
-
-                div.innerHTML += `
-                    <div class="client-row ${cardClass}">
-                        <div class="row-header">
+                container.innerHTML += `
+                    <div class="process-card" style="opacity:0.9;">
+                        <div class="process-header">
                             <div>
-                                <h4 class="client-name">${c.nome}</h4>
+                                <span class="process-title">${p.cliente}</span>
+                                <div style="margin-top: 4px; display:flex; gap:6px;">
+                                    <span class="badge badge-partner">Concluído</span>
+                                    ${p.investidor !== 'Nenhum' ? `<span class="badge badge-type">Sócio: ${p.investidor}</span>` : ''}
+                                </div>
                             </div>
-                            <span class="status-badge ${badgeClass}">${c.status}</span>
                         </div>
-                        
-                        <div class="row-body">
-                            <strong>Resumo:</strong> ${c.desc} <br>
-                            <span style="display:inline-block; margin-top:5px; font-size:0.8rem; color:var(--primary); font-weight:700; text-transform:uppercase;">
-                                PARCEIRO: ${c.inv}
-                            </span>
-                        </div>
-                        
-                        <div class="row-footer">
-                            <span class="valor-causa">${formatarMoeda(c.valor)}</span>
-                            
-                            <select class="action-select" onchange="mudarStatusPlanilha('${c.nome}', this.value, this)">
-                                <option value="Pendente" ${c.status === 'Pendente' ? 'selected' : ''}>⏳ Pendente</option>
-                                <option value="Recebido" ${c.status === 'Recebido' ? 'selected' : ''}>✅ Recebido</option>
-                            </select>
-                        </div>
+                        <p><strong>Causa:</strong> ${p.desc || 'Sem histórico.'}</p>
+                        <p><strong>Valor Total Quitado:</strong> ${formatarMoeda(p.valor)}</p>
+                        ${historicoHtml}
                     </div>
                 `;
             });
         }
 
         function renderInvestidor() {
-            const div = document.getElementById('lista-investidor');
-            div.innerHTML = '';
-            
-            const meusCasos = dbClientes.filter(c => c.inv.includes(usuarioLogado));
-            let arrayLucros = new Array(12).fill(0);
-            
-            // Variáveis para o somatório total
-            let totalPendente = 0;
-            let totalRecebido = 0;
+            const container = document.getElementById('lista-investidor');
+            const investidoresDb = db.filter(x => x.investidor !== 'Nenhum' && !x.finalizado);
+            container.innerHTML = investidoresDb.length === 0 ? '<p style="color:var(--text-gray);">Nenhum processo ativo vinculado a sócio.</p>' : '';
 
-            if(meusCasos.length === 0) {
-                div.innerHTML = `
-                    <div style="text-align:center; padding:50px 20px; color:var(--text-gray);">
-                        <i class="fa-solid fa-chart-pie" style="font-size:3rem; margin-bottom:15px; opacity:0.6;"></i>
-                        <p style="font-family:var(--font-title); font-size:1.1rem;">Sem contratos no momento.</p>
-                    </div>`;
-                document.getElementById('inv-total-pendente').innerText = "R$ 0,00";
-                document.getElementById('inv-total-recebido').innerText = "R$ 0,00";
-                renderGrafico(arrayLucros);
-                return;
+            investidoresDb.forEach(p => {
+                const lucro = p.valor * 0.50;
+                container.innerHTML += `
+                    <div class="process-card">
+                        <div class="process-header">
+                            <span class="process-title">${p.cliente} (${p.investidor})</span>
+                            <span class="badge badge-partner">50% Ativo</span>
+                        </div>
+                        <p>Valor Causa: ${formatarMoeda(p.valor)} | <strong>Lucro Investidor: ${formatarMoeda(lucro)}</strong></p>
+                    </div>
+                `;
+            });
+        }
+
+        function renderFinanceiro() {
+            const container = document.getElementById('lista-financeiro');
+            container.innerHTML = '';
+
+            let faturamentoBrutoGlobal = 0;
+            let lucroLiquidoDraGlobal = 0;
+
+            db.forEach(p => {
+                const totalPago = parseFloat(p.pago) || 0;
+                faturamentoBrutoGlobal += totalPago;
+
+                if (p.investidor !== 'Nenhum') {
+                    lucroLiquidoDraGlobal += (totalPago * 0.50);
+                } else {
+                    lucroLiquidoDraGlobal += totalPago;
+                }
+            });
+
+            const ativosParaFinanceiro = db.filter(x => !x.finalizado);
+
+            if (ativosParaFinanceiro.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-gray);">Nenhum processo ativo pendente de quitação.</p>';
             }
 
-            const ordenados = ordenarCasosPrioridade(meusCasos);
+            ativosParaFinanceiro.forEach(p => {
+                const totalPago = parseFloat(p.pago) || 0;
+                const restante = p.valor - totalPago;
 
-            ordenados.forEach(c => {
-                const dataFormatada = parseDataReal(c.data);
-                const mes = dataFormatada.getMonth() + 1;
-
-                let lucroLiquido = 0;
-                if(usuarioLogado === 'junior') {
-                    lucroLiquido = c.valor * 0.50; // Atualizado para 50%
-                } else {
-                    lucroLiquido = c.valor * 0.10; 
+                let historicoHtml = '';
+                if (p.historicoPagamentos && p.historicoPagamentos.length > 0) {
+                    historicoHtml = `
+                        <div class="history-box">
+                            <div class="history-title">Informações de Pagamentos Adiantados:</div>
+                            ${p.historicoPagamentos.map(h => `
+                                <div class="history-item">
+                                    <span>${h.data}</span>
+                                    <strong>+ ${formatarMoeda(h.valor)}</strong>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
                 }
 
-                // Acumula para o gráfico mensal
-                if(mes >= 1 && mes <= 12) arrayLucros[mes - 1] += lucroLiquido;
-                
-                const isRecebido = c.status.toLowerCase() === 'recebido';
-                
-                // Acumula os valores globais para os cards no topo
-                if(isRecebido) {
-                    totalRecebido += lucroLiquido;
-                } else {
-                    totalPendente += lucroLiquido;
-                }
-
-                const badgeClass = isRecebido ? 'recebido' : 'pendente';
-                const cardClass = isRecebido ? 'status-recebido' : '';
-
-                div.innerHTML += `
-                    <div class="client-row ${cardClass}">
-                        <div class="row-header">
-                            <div>
-                                <h4 class="client-name">${c.nome}</h4>
-                            </div>
-                            <span class="status-badge ${badgeClass}">${c.status}</span>
+                container.innerHTML += `
+                    <div class="process-card">
+                        <div class="process-header">
+                            <span class="process-title">${p.cliente} ${p.investidor !== 'Nenhum' ? '<small style="color:var(--primary);">(50% Sócio)</small>' : ''}</span>
+                            <span>Total Causa: <strong>${formatarMoeda(p.valor)}</strong></span>
                         </div>
-                        
-                        <div class="row-body">
-                            ${c.desc}
+                        <div style="display: flex; gap: 12px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
+                            <label style="font-weight:600;">Adicionar Pago (R$):</label>
+                            <input type="number" step="0.01" class="form-control" style="width: 140px;" placeholder="0.00" onchange="processarNovoPagamento(${p.id}, this)" inputmode="decimal">
+                            <span style="color: ${restante <= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">
+                                Saldo Restante: ${formatarMoeda(restante < 0 ? 0 : restante)}
+                            </span>
                         </div>
-                        
-                        <div class="row-footer" style="border: none; padding-top: 5px;">
-                            <div class="financial-highlight">
-                                <span>Lucro (50% Fixo)</span>
-                                <strong>${formatarMoeda(lucroLiquido)}</strong>
-                            </div>
-                        </div>
+                        ${historicoHtml}
                     </div>
                 `;
             });
 
-            // Atualiza o painel superior de somatórios
-            document.getElementById('inv-total-pendente').innerText = formatarMoeda(totalPendente);
-            document.getElementById('inv-total-recebido').innerText = formatarMoeda(totalRecebido);
-
-            renderGrafico(arrayLucros);
-        }
-
-        function renderGrafico(dados) {
-            const ctx = document.getElementById('chartLucros').getContext('2d');
-            if(meuGrafico) meuGrafico.destroy();
-            
-            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, '#05CD99');
-            gradient.addColorStop(1, 'rgba(5, 205, 153, 0.2)');
-
-            Chart.defaults.font.family = "'DM Sans', sans-serif";
-            
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            const tickColor = isDark ? '#94A3B8' : '#A3AED0';
-            const gridColor = isDark ? '#334155' : '#E9EDF7';
-
-            meuGrafico = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    datasets: [{ 
-                        label: 'Receita Líquida', 
-                        data: dados, 
-                        backgroundColor: gradient, 
-                        borderRadius: 8,
-                        hoverBackgroundColor: '#04A87D'
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { 
-                        y: { 
-                            border: { display: false },
-                            grid: { color: gridColor, drawBorder: false }, 
-                            ticks: { 
-                                color: tickColor, font: {size: 11, weight: 500},
-                                callback: function(value) { 
-                                    if(value === 0) return 'R$ 0';
-                                    return 'R$ ' + (value/1000).toFixed(1) + 'k'; 
-                                }
-                            } 
-                        }, 
-                        x: { 
-                            grid: { display: false }, 
-                            ticks: { color: tickColor, font: {size: 11, weight: 500} } 
-                        } 
-                    }, 
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#1E293B',
-                            titleFont: {family: 'Poppins', size: 14, weight: 600},
-                            bodyFont: {family: 'DM Sans', size: 14},
-                            padding: 15,
-                            cornerRadius: 12,
-                            displayColors: false,
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Líquido: ' + new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
-                                }
-                            }
-                        }
-                    } 
-                }
-            });
-        }
-    </script>
-    <!-- Script de Registro do PWA -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado com sucesso:', reg.scope))
-                    .catch(err => console.error('Falha ao registrar o Service Worker:', err));
-            });
+            document.getElementById('kpi-faturamento').innerText = formatarMoeda(faturamentoBrutoGlobal);
+            document.getElementById('kpi-lucro').innerText = formatarMoeda(lucroLiquidoDraGlobal);
         }
     </script>
 </body>
