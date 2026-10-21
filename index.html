@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Dra. Fernanda</title>
+    <title>Fernanda - Gestão Jurídica</title>
 
+    <!-- PWA / MANIFEST / IPHONE IOS TAGS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fernanda">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <meta name="theme-color" content="#4b0082">
+
+    <!-- Fontes San Francisco / Plus Jakarta Sans e FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg-body: #F2F2F7;
-            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card: rgba(255, 255, 255, 0.88);
             --bg-card-solid: #FFFFFF;
             --bg-input: #EFEFF4;
             --primary: #007AFF;
@@ -19,20 +30,20 @@
             --text-dark: #1C1C1E;
             --text-gray: #8E8E93;
             --border-color: #E5E5EA;
-            --shadow-apple: 0 12px 32px rgba(0, 0, 0, 0.05);
+            --shadow-apple: 0 8px 24px rgba(0, 0, 0, 0.04);
             --success: #34C759;
             --warning: #FF9500;
             --danger: #FF3B30;
             --gold: #FFCC00;
             --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            --radius-xl: 24px;
-            --radius-lg: 18px;
+            --radius-xl: 20px;
+            --radius-lg: 16px;
             --radius-md: 12px;
         }
 
         [data-theme="dark"] {
             --bg-body: #000000;
-            --bg-card: rgba(28, 28, 30, 0.85);
+            --bg-card: rgba(28, 28, 30, 0.88);
             --bg-card-solid: #1C1C1E;
             --bg-input: #2C2C2E;
             --primary: #0A84FF;
@@ -40,10 +51,16 @@
             --text-dark: #F2F2F7;
             --text-gray: #98989D;
             --border-color: #38383A;
-            --shadow-apple: 0 12px 32px rgba(0, 0, 0, 0.4);
+            --shadow-apple: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: var(--font-main); 
+            -webkit-tap-highlight-color: transparent; 
+        }
         
         body { 
             background-color: var(--bg-body); 
@@ -56,14 +73,21 @@
 
         .app-container { display: flex; flex-direction: column; min-height: 100vh; }
 
+        /* HEADER NATIVO */
         .topbar {
-            background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            height: calc(60px + env(safe-area-inset-top)); 
-            padding: env(safe-area-inset-top) 1rem 0 1rem; 
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+            background: var(--bg-card); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            padding: calc(10px + env(safe-area-inset-top)) 1rem 10px 1rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid var(--border-color); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
         }
-        .brand { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .brand { font-size: 1.05rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
         .brand i { color: var(--primary); }
 
         .top-actions { display: flex; align-items: center; gap: 8px; }
@@ -75,63 +99,62 @@
 
         .notification-badge { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; display: none; }
 
+        /* NAVEGAÇÃO DESLIZANTE PARA CELULAR */
         .nav-tabs {
-            background: var(--bg-card); backdrop-filter: blur(15px); display: flex; justify-content: flex-start; gap: 8px; padding: 10px 1rem;
+            background: var(--bg-card); backdrop-filter: blur(15px); display: flex; justify-content: flex-start; gap: 6px; padding: 8px 1rem;
             border-bottom: 1px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch;
         }
         .nav-tabs::-webkit-scrollbar { display: none; }
         
         .tab-btn {
-            background: transparent; border: none; padding: 8px 16px; border-radius: var(--radius-md);
-            color: var(--text-gray); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.9rem !important;
+            background: transparent; border: none; padding: 8px 14px; border-radius: var(--radius-md);
+            color: var(--text-gray); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.85rem !important;
         }
-        .tab-btn.active { background: var(--primary); color: #FFF; box-shadow: 0 4px 14px rgba(0,122,255,0.3); }
+        .tab-btn.active { background: var(--primary); color: #FFF; box-shadow: 0 4px 12px rgba(0,122,255,0.25); }
 
         .main-content { padding: 1rem; max-width: 1400px; width: 100%; margin: 0 auto; flex: 1; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .grid-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 1.5rem; }
+        .grid-layout { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+        @media(min-width: 900px) { .grid-layout { grid-template-columns: 1fr 1.4fr; } }
 
-        /* OCULTA O FORMULÁRIO DE CADASTRO APENAS NO CELULAR */
+        /* OCULTA CADASTRO NO CELULAR */
         @media (max-width: 899px) {
             .form-cadastro-container {
                 display: none !important;
             }
-            .grid-layout {
-                grid-template-columns: 1fr !important;
-            }
         }
 
         .apple-card-form {
-            background: var(--bg-card-solid); border-radius: var(--radius-xl); padding: 1.5rem;
+            background: var(--bg-card-solid); border-radius: var(--radius-xl); padding: 1.2rem;
             border: 1px solid var(--border-color); box-shadow: var(--shadow-apple);
         }
-        .form-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 1.2rem; letter-spacing: -0.5px; }
+        .form-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.3px; }
 
-        .form-group { margin-bottom: 1rem; }
-        .form-label { font-size: 0.78rem; font-weight: 700; margin-bottom: 6px; display: block; text-transform: uppercase; color: var(--text-gray); }
+        .form-group { margin-bottom: 0.9rem; }
+        .form-label { font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; display: block; text-transform: uppercase; color: var(--text-gray); }
         .form-control {
             width: 100%; background: var(--bg-input); border: 1.5px solid transparent;
             border-radius: var(--radius-md); padding: 12px 14px; color: var(--text-dark); outline: none; font-weight: 600;
         }
         .form-control:focus { border-color: var(--primary); background: var(--bg-card-solid); }
 
-        .switch-box { display: flex; align-items: center; justify-content: space-between; background: var(--bg-input); padding: 12px 14px; border-radius: var(--radius-md); }
-        .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+        .switch-box { display: flex; align-items: center; justify-content: space-between; background: var(--bg-input); padding: 10px 14px; border-radius: var(--radius-md); }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #D1D1D6; transition: .3s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--success); }
         input:checked + .slider:before { transform: translateX(20px); }
 
         .btn-apple {
             width: 100%; background: var(--primary); color: #FFF; border: none; padding: 14px;
             border-radius: var(--radius-md); font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.28);
+            box-shadow: 0 4px 14px rgba(0, 122, 255, 0.25);
         }
 
-        .filter-bar { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 1rem; -webkit-overflow-scrolling: touch; }
+        .filter-bar { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 0.8rem; -webkit-overflow-scrolling: touch; }
         .filter-bar::-webkit-scrollbar { display: none; }
         .btn-filter {
             background: var(--bg-input); border: none; padding: 6px 14px; border-radius: 20px;
@@ -139,40 +162,41 @@
         }
         .btn-filter.active { background: var(--text-dark); color: var(--bg-body); }
 
+        /* CARDS ADAPTADOS PARA MOBILE */
         .process-card {
             background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
-            padding: 1.2rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 10px; position: relative;
+            padding: 1rem; margin-bottom: 0.8rem; display: flex; flex-direction: column; gap: 8px; position: relative;
             box-shadow: var(--shadow-apple); word-break: break-word;
         }
-        .process-card.is-favorite { border: 2px solid var(--gold); background: rgba(255, 204, 0, 0.03); }
-        .process-card.has-reminder { border-left: 5px solid var(--primary); }
+        .process-card.is-favorite { border: 2px solid var(--gold); background: rgba(255, 204, 0, 0.02); }
+        .process-card.has-reminder { border-left: 4px solid var(--primary); }
 
         .process-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .process-title { font-weight: 800; font-size: 1.05rem; }
+        .process-title { font-weight: 800; font-size: 1rem; }
 
         .action-icons { display: flex; gap: 8px; align-items: center; }
         .btn-star, .btn-edit { background: transparent; border: none; font-size: 1.1rem; cursor: pointer; color: var(--text-gray); }
         .btn-star.active { color: var(--gold); }
 
-        .badge { padding: 4px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge { padding: 3px 8px; border-radius: 8px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; }
         .badge-type { background: var(--bg-input); color: var(--text-dark); }
         .badge-partner { background: rgba(52, 199, 89, 0.15); color: var(--success); }
 
         .draft-box {
-            background: rgba(255, 149, 0, 0.1); border-left: 3px solid var(--warning); padding: 8px 12px;
-            border-radius: 8px; font-size: 0.82rem; color: var(--text-dark); font-weight: 500;
+            background: rgba(255, 149, 0, 0.1); border-left: 3px solid var(--warning); padding: 8px 10px;
+            border-radius: 6px; font-size: 0.8rem; color: var(--text-dark); font-weight: 500;
         }
 
         .btn-done { background: rgba(52, 199, 89, 0.15); color: var(--success); border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
-        .kpi-container { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .kpi-container { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-bottom: 1.2rem; }
         @media(min-width: 600px) { .kpi-container { grid-template-columns: 1fr 1fr; } }
-        .kpi-card { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.2rem; box-shadow: var(--shadow-apple); }
-        .kpi-card span { font-size: 0.75rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
-        .kpi-card h2 { font-size: 1.5rem; font-weight: 800; margin-top: 4px; color: var(--text-dark); }
+        .kpi-card { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem; box-shadow: var(--shadow-apple); }
+        .kpi-card span { font-size: 0.7rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
+        .kpi-card h2 { font-size: 1.35rem; font-weight: 800; margin-top: 4px; color: var(--text-dark); }
 
-        .history-box { background: var(--bg-input); border-radius: 10px; padding: 10px 12px; font-size: 0.82rem; margin-top: 8px; }
-        .history-title { font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
+        .history-box { background: var(--bg-input); border-radius: 8px; padding: 8px 10px; font-size: 0.8rem; margin-top: 6px; }
+        .history-title { font-weight: 700; margin-bottom: 4px; color: var(--text-dark); }
         .history-item { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed var(--border-color); }
 
         .modal-overlay {
@@ -181,17 +205,17 @@
             display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem;
         }
         .modal-card {
-            background: var(--bg-card-solid); border-radius: var(--radius-xl); padding: 1.5rem;
-            width: 100%; max-width: 440px; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            background: var(--bg-card-solid); border-radius: var(--radius-xl); padding: 1.2rem;
+            width: 100%; max-width: 440px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         .notifications-drawer {
-            position: absolute; top: 65px; right: 1rem; width: calc(100vw - 2rem); max-width: 320px;
+            position: absolute; top: 60px; right: 1rem; width: calc(100vw - 2rem); max-width: 320px;
             background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
-            padding: 1rem; box-shadow: var(--shadow-apple); display: none; z-index: 200;
+            padding: 0.9rem; box-shadow: var(--shadow-apple); display: none; z-index: 200;
         }
 
-        .loading-status { font-size: 0.8rem; color: var(--primary); font-weight: 600; text-align: center; margin-bottom: 8px; }
+        .loading-status { font-size: 0.78rem; color: var(--primary); font-weight: 600; text-align: center; margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -210,8 +234,8 @@
         </header>
 
         <div class="notifications-drawer" id="drawer-notificacoes">
-            <h4 style="font-size:0.95rem; margin-bottom:8px;">🔔 Lembretes do Dia</h4>
-            <div id="lista-notificacoes-conteudo" style="font-size:0.82rem; color:var(--text-gray);">
+            <h4 style="font-size:0.9rem; margin-bottom:6px;">🔔 Lembretes do Dia</h4>
+            <div id="lista-notificacoes-conteudo" style="font-size:0.8rem; color:var(--text-gray);">
                 Nenhum lembrete para hoje.
             </div>
         </div>
@@ -230,7 +254,7 @@
             <div id="aba-processos" class="tab-content active">
                 <div class="grid-layout">
                     
-                    <!-- FORMULÁRIO DE CADASTRO: APARECE APENAS NO COMPUTADOR -->
+                    <!-- EXIBIDO SOMENTE NO COMPUTADOR -->
                     <div class="apple-card-form form-cadastro-container">
                         <h3 class="form-title">Cadastrar Processo</h3>
                         <form id="form-processo" onsubmit="salvarProcesso(event)">
@@ -255,7 +279,7 @@
                             <div class="form-group">
                                 <label class="form-label">Sócio / Investidor</label>
                                 <div class="switch-box">
-                                    <span style="font-weight: 600; font-size: 0.9rem;">Sócio Júnior (50%)</span>
+                                    <span style="font-weight: 600; font-size: 0.85rem;">Sócio Júnior (50%)</span>
                                     <label class="switch">
                                         <input type="checkbox" id="proc-investidor-toggle">
                                         <span class="slider"></span>
@@ -270,9 +294,9 @@
                         </form>
                     </div>
 
-                    <!-- LISTAGEM DE PROCESSOS: APARECE EM AMBOS (CELULAR E COMPUTADOR) -->
+                    <!-- EXIBIDO EM COMPUTADOR E CELULAR -->
                     <div>
-                        <div class="loading-status" id="status-sincronizacao">Carregando da nuvem...</div>
+                        <div class="loading-status" id="status-sincronizacao">Carregando dados...</div>
                         <div class="filter-bar">
                             <button type="button" class="btn-filter active" onclick="filtrarProcessos('Todos', this)">Todos</button>
                             <button type="button" class="btn-filter" onclick="filtrarProcessos('Favoritos', this)">⭐ Favoritos</button>
@@ -333,7 +357,7 @@
                             <input type="text" id="cfg-sheet-url" class="form-control" placeholder="Cole a URL da Planilha" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">URL do Google Apps Script (/exec)</label>
+                            <label class="form-label">URL do Apps Script (/exec)</label>
                             <input type="text" id="cfg-script-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" required>
                         </div>
                         <button type="submit" class="btn-apple">Salvar Conexões</button>
@@ -347,11 +371,11 @@
     <!-- MODAL CONFIRMAÇÃO & LEMBRETE -->
     <div class="modal-overlay" id="modal-lembrete">
         <div class="modal-card">
-            <h3 style="color:var(--success); margin-bottom:5px;"><i class="fa-solid fa-circle-check"></i> Cliente Cadastrado!</h3>
-            <p id="modal-texto-info" style="font-size:0.95rem; line-height:1.4; margin-bottom:1.5rem;"></p>
+            <h3 style="color:var(--success); margin-bottom:5px; font-size:1.1rem;"><i class="fa-solid fa-circle-check"></i> Cliente Cadastrado!</h3>
+            <p id="modal-texto-info" style="font-size:0.88rem; line-height:1.4; margin-bottom:1.2rem;"></p>
             
             <div id="box-botao-criar-lembrete">
-                <button type="button" class="btn-apple" style="background:var(--bg-input); color:var(--text-dark); box-shadow:none; margin-bottom:10px;" onclick="ativarFormularioLembreteModal()">⏰ Criar Lembrete</button>
+                <button type="button" class="btn-apple" style="background:var(--bg-input); color:var(--text-dark); box-shadow:none; margin-bottom:8px;" onclick="ativarFormularioLembreteModal()">⏰ Criar Lembrete</button>
             </div>
 
             <div id="campos-lembrete-box" style="display: none;">
@@ -367,17 +391,17 @@
 
             <input type="hidden" id="modal-processo-id">
 
-            <div style="display: flex; gap: 10px; margin-top: 1rem;">
+            <div style="display: flex; gap: 8px; margin-top: 0.8rem;">
                 <button type="button" class="btn-apple" id="btn-modal-concluir" style="background: var(--bg-input); color: var(--text-dark); box-shadow:none;" onclick="fecharModal()">Concluir</button>
                 <button type="button" class="btn-apple" id="btn-modal-confirmar" style="display:none;" onclick="salvarLembreteModal()">Confirmar Lembrete</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL EDIÇÃO COMPLETA DO PROCESSO -->
+    <!-- MODAL EDIÇÃO COMPLETA -->
     <div class="modal-overlay" id="modal-editar">
         <div class="modal-card">
-            <h3 style="margin-bottom:1rem;">✏️ Editar Processo</h3>
+            <h3 style="margin-bottom:0.8rem; font-size:1.1rem;">✏️ Editar Processo</h3>
             <input type="hidden" id="edit-id">
             
             <div class="form-group">
@@ -393,7 +417,7 @@
                 <input type="number" step="0.01" id="edit-valor" class="form-control" required inputmode="decimal">
             </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+            <div style="display: flex; gap: 8px; margin-top: 1rem;">
                 <button type="button" class="btn-apple" style="background: var(--bg-input); color: var(--text-dark); box-shadow:none;" onclick="fecharModalEditar()">Cancelar</button>
                 <button type="button" class="btn-apple" onclick="salvarEdicaoProcesso()">Salvar Alterações</button>
             </div>
@@ -746,7 +770,7 @@
                 badge.style.display = 'block';
                 drawerConteudo.innerHTML = '';
                 notificacoes.forEach(n => {
-                    drawerConteudo.innerHTML += `<div style="margin-bottom:8px;"><strong>${n.cliente}:</strong> ${n.rascunho || 'Lembrete agendado para hoje!'}</div>`;
+                    drawerConteudo.innerHTML += `<div style="margin-bottom:6px;"><strong>${n.cliente}:</strong> ${n.rascunho || 'Lembrete agendado para hoje!'}</div>`;
                 });
             } else {
                 badge.style.display = 'none';
@@ -772,7 +796,7 @@
             else if(filtroAtual !== 'Todos') ativos = ativos.filter(x => x.tipo === filtroAtual);
 
             if(ativos.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-gray); text-align:center; padding: 2rem;">Nenhum processo ativo no momento.</p>';
+                container.innerHTML = '<p style="color:var(--text-gray); text-align:center; padding: 1.5rem;">Nenhum processo ativo no momento.</p>';
                 return;
             }
 
@@ -792,12 +816,12 @@
                                 <button type="button" class="btn-edit" onclick="abrirModalEditar(${p.id})"><i class="fa-solid fa-pen-to-square"></i></button>
                             </div>
                         </div>
-                        <p style="font-size:0.9rem; color:var(--text-gray);">${p.desc || 'Sem causa detalhada.'}</p>
+                        <p style="font-size:0.85rem; color:var(--text-gray);">${p.desc || 'Sem causa detalhada.'}</p>
                         
                         ${p.rascunho ? `<div class="draft-box"><strong>📌 Lembrete (${formatarDataBR(p.lembreteData)}):</strong>${p.rascunho}</div>` : ''}
                         
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 8px;">
-                            <strong>Valor Causa: ${formatarMoeda(p.valor)}</strong>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 6px;">
+                            <strong style="font-size:0.9rem;">Valor: ${formatarMoeda(p.valor)}</strong>
                             <button type="button" class="btn-done" onclick="finalizarProcesso(${p.id})">✅ Finalizar</button>
                         </div>
                     </div>
@@ -819,8 +843,8 @@
                 let historicoHtml = '';
                 if (p.historicoPagamentos && p.historicoPagamentos.length > 0) {
                     historicoHtml = `
-                        <div class="history-box" style="margin-top:10px;">
-                            <div class="history-title">📄 Dossiê do Pagamento (Documentado):</div>
+                        <div class="history-box">
+                            <div class="history-title">📄 Dossiê do Pagamento:</div>
                             ${p.historicoPagamentos.map(h => `
                                 <div class="history-item">
                                     <span>Pagamento em ${h.data}</span>
@@ -842,8 +866,8 @@
                                 </div>
                             </div>
                         </div>
-                        <p><strong>Causa:</strong> ${p.desc || 'Sem histórico.'}</p>
-                        <p><strong>Valor Total Quitado:</strong> ${formatarMoeda(p.valor)}</p>
+                        <p style="font-size:0.85rem;"><strong>Causa:</strong> ${p.desc || 'Sem histórico.'}</p>
+                        <p style="font-size:0.85rem;"><strong>Valor Total Quitado:</strong> ${formatarMoeda(p.valor)}</p>
                         ${historicoHtml}
                     </div>
                 `;
@@ -863,7 +887,7 @@
                             <span class="process-title">${p.cliente} (${p.investidor})</span>
                             <span class="badge badge-partner">50% Ativo</span>
                         </div>
-                        <p>Valor Causa: ${formatarMoeda(p.valor)} | <strong>Lucro Investidor: ${formatarMoeda(lucro)}</strong></p>
+                        <p style="font-size:0.85rem;">Valor Causa: ${formatarMoeda(p.valor)} | <strong>Lucro Investidor: ${formatarMoeda(lucro)}</strong></p>
                     </div>
                 `;
             });
@@ -916,13 +940,13 @@
                     <div class="process-card">
                         <div class="process-header">
                             <span class="process-title">${p.cliente} ${p.investidor !== 'Nenhum' ? '<small style="color:var(--primary);">(50% Sócio)</small>' : ''}</span>
-                            <span>Total Causa: <strong>${formatarMoeda(p.valor)}</strong></span>
+                            <span style="font-size:0.85rem;">Total: <strong>${formatarMoeda(p.valor)}</strong></span>
                         </div>
-                        <div style="display: flex; gap: 12px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
-                            <label style="font-weight:600;">Adicionar Pago (R$):</label>
-                            <input type="number" step="0.01" class="form-control" style="width: 140px;" placeholder="0.00" onchange="processarNovoPagamento(${p.id}, this)" inputmode="decimal">
-                            <span style="color: ${restante <= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">
-                                Saldo Restante: ${formatarMoeda(restante < 0 ? 0 : restante)}
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px; flex-wrap: wrap;">
+                            <label style="font-weight:600; font-size:0.8rem;">Adicionar Pago (R$):</label>
+                            <input type="number" step="0.01" class="form-control" style="width: 110px; padding:8px 10px;" placeholder="0.00" onchange="processarNovoPagamento(${p.id}, this)" inputmode="decimal">
+                            <span style="color: ${restante <= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight:700; font-size:0.8rem;">
+                                Saldo: ${formatarMoeda(restante < 0 ? 0 : restante)}
                             </span>
                         </div>
                         ${historicoHtml}
